@@ -1,0 +1,22 @@
+# Build artifacts
+build/
+*.o
+*.a
+
+# Original Wen benchmark: 3234 files, publicly available upstream --
+# clone it here rather than committing a copy (see benchmark/README.md).
+benchmark/*
+!benchmark/README.md
+
+# Generated raw outputs -- one folder per run_id, reproducible from
+# config/experiments/*.yaml + the benchmark, not meant to be versioned.
+runs/*
+!runs/.gitkeep
+
+# Editor/OS noise
+.vscode/
+.idea/
+*.swp
+.DS_Store
+__pycache__/
+*.pyc

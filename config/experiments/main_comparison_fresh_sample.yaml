@@ -1,0 +1,12 @@
+experiment: main_comparison
+binary: build/ugv_coordination
+vehicle_config: config/vehicle_config.yaml
+instances:
+  - dir: benchmark/map50by50/agents10/obstacle
+  - dir: benchmark/map50by50/agents15/obstacle
+pattern: "*.yaml"
+max_instances_per_dir: 5
+methods: [clcbs, lcbr]
+delta_w: [10]
+timeout: 90
+max_low_level_expansions: 150000

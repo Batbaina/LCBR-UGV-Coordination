@@ -1,0 +1,23 @@
+# Sec. 5.4 "Repair-Window Ablation". delta_w = delta_T + k*Ts grid;
+# delta_T = constraintWaitTime (config/vehicle_config.yaml) = 2, Ts = 1 step,
+# so k in {1,3,5,10,20} => delta_w in {3,5,7,12,22}. Adjusted slightly below
+# to keep round numbers; both are >= delta_T+Ts (Eq. 11), enforced anyway by
+# the binary itself if violated.
+experiment: delta_w_ablation
+
+binary: build/ugv_coordination
+vehicle_config: config/vehicle_config.yaml
+
+instances:
+  - dir: benchmark/map50by50/agents10/obstacle
+  - dir: benchmark/map100by100/agents20/obstacle
+
+pattern: "*.yaml"
+max_instances_per_dir: 8
+
+methods: [lcbr]          # CL-CBS baseline for this cell is pulled from
+                         # main_comparison's runs (same instances) rather
+                         # than re-run here -- see docs/EXPERIMENTS.md
+delta_w: [3, 5, 7, 12, 22]
+timeout: 180
+max_low_level_expansions: 150000

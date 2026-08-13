@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "LCBR: Local Conflict-Based Trajectory Repair for Multi-UGV Coordination"
+type: software
+authors:
+  - name: "Batbaina"
+date-released: "2026-08-11"
+license: MIT
+preferred-citation:
+  type: article
+  title: "Stage 1 -- UGV Coordination and Task Allocation"
+  authors:
+    - name: "Batbaina"
+  year: 2026
+references:
+  - type: software
+    title: "CL-CBS: Car-Like Conflict-Based Search"
+    authors:
+      - name: "Licheng Wen"
+      - name: "Zhen Zhang"
+      - name: "Zhe Chen"
+      - name: "Xiangrui Zhao"
+      - name: "Yong Liu"
+    url: "https://github.com/APRIL-ZJU/CL-CBS"
+    notes: >
+      LCBR is built directly on top of CL-CBS's low-level search
+      (hybrid_astar.hpp, unmodified) and high-level BCT structure.
+      This project's contribution is the local repair mechanism
+      (include/local_repair.hpp) and the Stage 1+2 nominal
+      trajectory generation + task allocation pipeline
+      (include/task_allocation.hpp) that CL-CBS does not have.

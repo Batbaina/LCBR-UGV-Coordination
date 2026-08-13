@@ -1,0 +1,36 @@
+# Vehicle kinematics, footprint and SHA* penalty parameters.
+# Identical in meaning to CL-CBS's original src/config.yaml (Wen et al.);
+# only `repairMarginSteps` (delta_w) is new -- LCBR's single additional
+# tunable parameter (paper Sec. 4.3.3).
+
+# The minimum turning radius of the vehicle [m] (rho, Sec. 3.1)
+r: 3
+# Steering discretization step [rad] (governs the 6 motion primitives)
+deltat: 0.706
+
+# Cost function penalties (Eq. 9 / Sec. 4.3.2), matching CL-CBS's g(.)
+penaltyTurning: 1.5
+penaltyReversing: 2.0
+penaltyCOD: 2.0
+
+# Map / search grid resolution [m]
+mapResolution: 2.0
+
+# Robot footprint (rectangle at the rear axle, Sec. 3.1)
+carWidth: 2.0
+LF: 2.0   # distance from rear axle to vehicle front end
+LB: 1.0   # distance from rear axle to vehicle rear end
+
+# Static obstacle default radius [m]
+obsRadius: 0.8
+
+# delta_T: temporal safety margin of a branch constraint (Eq. 7-8), in T_s
+# steps. A conflict at time t forbids the constrained robot's footprint
+# from intersecting the other robot's footprint during [t - delta_T, t + delta_T].
+constraintWaitTime: 2
+
+# delta_w: LCBR repair margin (Eq. 10), in T_s steps. Must satisfy
+# delta_w >= constraintWaitTime + 1 (Eq. 11). Overridden by --delta_w_steps
+# on the command line when > 0; used only when the CLI flag is left at its
+# default (0).
+repairMarginSteps: 10

@@ -1,0 +1,34 @@
+experiment: pilot_main_comparison_100
+
+binary: build/ugv_coordination
+vehicle_config: config/vehicle_config.yaml
+
+instances:
+  # 5 agents
+  - dir: benchmark/map100by100/agents5/empty
+  - dir: benchmark/map100by100/agents5/obstacle
+
+  # 10 agents
+  - dir: benchmark/map100by100/agents10/empty
+  - dir: benchmark/map100by100/agents10/obstacle
+
+  # 20 agents
+  - dir: benchmark/map100by100/agents20/empty
+  - dir: benchmark/map100by100/agents20/obstacle
+
+  # 30 agents
+  - dir: benchmark/map100by100/agents30/empty
+  - dir: benchmark/map100by100/agents30/obstacle
+
+pattern: "*.yaml"
+
+# Pilot sample. Increase to 30 instances per selected configuration
+# for the final comparison after identifying informative regimes.
+max_instances_per_dir: 25
+
+methods: [clcbs, lcbr]
+
+delta_w: [10]
+
+timeout: 300
+max_low_level_expansions: 150000

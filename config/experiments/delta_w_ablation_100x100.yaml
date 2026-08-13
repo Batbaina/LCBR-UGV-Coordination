@@ -1,0 +1,37 @@
+experiment: delta_w_ablation
+
+binary: build/ugv_coordination
+vehicle_config: config/vehicle_config.yaml
+
+instances:
+# 5 agents
+  - dir: benchmark/map100by100/agents5/empty
+  - dir: benchmark/map100by100/agents5/obstacle
+# 10 agents
+  - dir: benchmark/map100by100/agents10/empty
+  - dir: benchmark/map100by100/agents10/obstacle
+# 20 agents
+  - dir: benchmark/map100by100/agents20/empty
+  - dir: benchmark/map100by100/agents20/obstacle
+# 30 agents
+  - dir: benchmark/map100by100/agents30/empty
+  - dir: benchmark/map100by100/agents30/obstacle
+
+pattern: "*.yaml"
+
+# Halved from the 50x50 ablation (10 -> 5): each 100x100 instance is
+# individually slower than a 50x50 one, and the r_w trend across delta_w
+# proved very consistent instance-to-instance in the main pilot (low
+# variance within a map size) -- 5/cell is enough to see the same trend
+# without the wall-clock cost of 10/cell.
+max_instances_per_dir: 5
+
+methods: [lcbr]
+
+# r_w median was 0.905 at delta_w=10 on this map size -- close to 1, so
+# the smaller values here matter most for seeing whether it drops
+# meaningfully below the "near full-horizon" threshold.
+delta_w: [3, 5, 7, 12, 22]
+
+timeout: 300
+max_low_level_expansions: 150000

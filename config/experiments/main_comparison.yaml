@@ -1,0 +1,29 @@
+# Sec. 5.2 "Main Comparison": CL-CBS vs LCBR, single default delta_w,
+# paired on the exact same instances. This is the single source of truth
+# for that experiment -- experiments/main_comparison/*.py reads this file,
+# nothing is passed as ad-hoc CLI flags that could silently diverge from it.
+experiment: main_comparison
+
+binary: build/ugv_coordination
+vehicle_config: config/vehicle_config.yaml
+
+# One entry per benchmark cell to pull instances from. Start small (pilot)
+# before widening -- map300by300/agents90-100 is expensive, see
+# benchmark/README.md.
+instances:
+  - dir: benchmark/map50by50/agents5/obstacle
+  - dir: benchmark/map50by50/agents10/obstacle
+  - dir: benchmark/map50by50/agents15/obstacle
+  - dir: benchmark/map50by50/agents20/obstacle
+
+pattern: "*.yaml"
+
+# Deterministic selection: first N instances per dir, sorted by filename
+# (ex0, ex1, ... -- not random, so reruns with the same cap are identical).
+# null/omit = use every instance in the dir.
+max_instances_per_dir: 10
+
+methods: [clcbs, lcbr]
+delta_w: [10]          # single configuration -- see delta_w_ablation.yaml for a sweep
+timeout: 180            # seconds, Stage 3 only (Sec. 5.1)
+max_low_level_expansions: 150000

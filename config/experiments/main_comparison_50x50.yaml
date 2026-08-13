@@ -1,0 +1,31 @@
+experiment: pilot_main_comparison_50
+
+binary: build/ugv_coordination
+vehicle_config: config/vehicle_config.yaml
+
+instances:
+  # 5 agents
+  - dir: benchmark/map50by50/agents5/empty
+  - dir: benchmark/map50by50/agents5/obstacle
+
+  # 10 agents
+  - dir: benchmark/map50by50/agents10/empty
+  - dir: benchmark/map50by50/agents10/obstacle
+
+  # 15 agents
+  - dir: benchmark/map50by50/agents15/empty
+  - dir: benchmark/map50by50/agents15/obstacle
+
+  # 20 agents
+  - dir: benchmark/map50by50/agents20/empty
+  - dir: benchmark/map50by50/agents20/obstacle
+
+pattern: "*.yaml"
+max_instances_per_dir: 30
+
+methods: [clcbs, lcbr]
+
+delta_w: [10]
+
+timeout: 180
+max_low_level_expansions: 150000

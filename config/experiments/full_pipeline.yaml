@@ -1,0 +1,15 @@
+# Sec. 5.6 "End-to-End Coordination Examples". 2-3 illustrative instances,
+# no statistical evaluation -- full pipeline (Stage 1 -> 2 -> 3), rendered.
+experiment: full_pipeline
+
+binary: build/ugv_coordination
+vehicle_config: config/vehicle_config.yaml
+
+instances_dir: experiments/full_pipeline/instances
+pattern: "*.yaml"
+
+methods: [clcbs, lcbr]
+delta_w: [10]
+timeout: 300
+max_low_level_expansions: 150000
+render: true             # also produce PNG/GIF via scripts/render_demo.py
