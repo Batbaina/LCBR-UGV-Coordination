@@ -6,16 +6,35 @@ described in *"Stage 1 -- UGV Coordination and Task Allocation"*: nominal
 trajectory generation, trajectory-cost-based task allocation, and
 multi-robot conflict resolution for a fleet of Ackermann-steered UGVs.
 
-<p align="center">
-  <img src="docs/images/end_to_end_pipeline.png" width="850"
-       alt="Three end-to-end pipeline examples, CL-CBS (top row) vs LCBR (bottom row)">
-</p>
+<table align="center">
+<tr>
+  <th>Example A — Grouped / Scattered</th>
+  <th>Example B — Grouped / Wall</th>
+  <th>Example C — Grouped / Crop Rows</th>
+</tr>
+<tr>
+  <td>
+    <img src="docs/images/instance1_grouped_scattered_lcbr_dw10.gif"
+         width="280"
+         alt="LCBR example A">
+  </td>
+  <td>
+    <img src="docs/images/instance2_grouped_wall_lcbr_dw10.gif"
+         width="280"
+         alt="LCBR example B">
+  </td>
+  <td>
+    <img src="docs/images/instance3_grouped_croprows_lcbr_dw10.gif"
+         width="280"
+         alt="LCBR example C">
+  </td>
+</tr>
+</table>
 
 <p align="center"><em>
-Three example instances taken through the full Stage 1 &rarr; 2 &rarr; 3
-pipeline. LCBR (bottom) reaches the same or a comparable solution to
-CL-CBS (top) while resolving conflicts through bounded local repair
-instead of full-horizon replanning.
+Three six-robot examples through the complete Stage 1 → 2 → 3 pipeline,
+showing the final LCBR trajectories with bounded local conflict repair
+($\delta_w=10$).
 </em></p>
 
 **New here?**
