@@ -108,29 +108,70 @@ def _hostname():
 
 def run_binary(binary, instance_path, out_yaml, mode, instance_id,
                scratch_log_dir, vehicle_config, timeout, delta_w=None,
-               max_low_level_expansions=None, cost_matrix_csv=None):
-    cmd = [binary, "-i", instance_path, "-o", out_yaml, "--mode", mode,
-           "--instance-id", instance_id, "--log-dir", scratch_log_dir,
-           "--vehicle-config", vehicle_config, "--timeout", str(timeout)]
+               max_low_level_expansions=None, cost_matrix_csv=None,
+               paired_probe=False):
+
+    cmd = [
+        binary,
+        "-i", instance_path,
+        "-o", out_yaml,
+        "--mode", mode,
+        "--instance-id", instance_id,
+        "--log-dir", scratch_log_dir,
+        "--vehicle-config", vehicle_config,
+        "--timeout", str(timeout)
+    ]
+
     if delta_w is not None:
         cmd += ["--delta_w_steps", str(delta_w)]
-    if max_low_level_expansions is not None:
-        cmd += ["--max-low-level-expansions", str(max_low_level_expansions)]
-    if cost_matrix_csv is not None:
-        cmd += ["--cost-matrix-csv", cost_matrix_csv]
-    label = f"{os.path.basename(instance_path)} {mode}" + (f" dw={delta_w}" if delta_w is not None else "")
-    print(f"[run] {label} ...", flush=True)
-    try:
-        proc = subprocess.run(cmd, timeout=timeout + 60, capture_output=True, text=True)
-        ok = proc.returncode == 0
-    except subprocess.TimeoutExpired:
-        ok = False
-        proc = None
-    print(f"[run]   -> {'OK' if ok else 'FAIL/TIMEOUT'}", flush=True)
-    if proc is not None and not ok and proc.stderr:
-        print("  stderr:", proc.stderr.strip()[-400:], file=sys.stderr)
-    return ok
 
+    if max_low_level_expansions is not None:
+        cmd += [
+            "--max-low-level-expansions",
+            str(max_low_level_expansions)
+        ]
+
+    if cost_matrix_csv is not None:
+        cmd += [
+            "--cost-matrix-csv",
+            cost_matrix_csv
+        ]
+
+    if paired_probe:
+        cmd += ["--paired-probe"]
+
+    label = (
+        f"{os.path.basename(instance_path)} {mode}"
+        + (f" dw={delta_w}" if delta_w is not None else "")
+        + (" paired-probe" if paired_probe else "")
+    )
+
+    print(
+        f"[run] {label} ...",
+        flush=True
+    )
+
+    proc = subprocess.run(
+        cmd,
+        capture_output=True,
+        text=True
+    )
+
+    ok = proc.returncode == 0
+
+    print(
+        f"[run]   -> {'OK' if ok else 'FAIL'}",
+        flush=True
+    )
+
+    if not ok and proc.stderr:
+        print(
+            "  stderr:",
+            proc.stderr.strip()[-400:],
+            file=sys.stderr
+        )
+
+    return ok
 
 def finalize_run_csvs(scratch_log_dir, run_dir):
     """Copies the binary's own instance_log.csv / query_log.csv (written

@@ -395,6 +395,11 @@ int main(int argc, char *argv[]) {
   size_t maxLowLevelExpansions;
   int deltaWSteps;
   int timeoutSeconds;
+  // Experimental diagnostic:
+  // when enabled, LCBR additionally evaluates a counterfactual
+  // full-horizon SHA* query for each applicable local-repair branch.
+  // This probe is used only for the paired Local-vs-Full analysis.
+  bool pairedProbe;
 
   po::options_description desc("Allowed options");
   desc.add_options()("help", "produce help message")(
@@ -406,6 +411,10 @@ int main(int argc, char *argv[]) {
       "LCBR repair margin, in T_s steps (0 => read from vehicle config / default)")(
       "timeout", po::value<int>(&timeoutSeconds)->default_value(120),
       "conflict-resolution wall-clock budget, in seconds (Stage 3 only; Stage 1/2 are unbounded)")(
+      "paired-probe",po::bool_switch(&pairedProbe)->default_value(false),
+      "LCBR diagnostic only: for every applicable local-repair branch, "
+      "also solve the same child constraint with a counterfactual "
+      "full-horizon SHA* query. The probe result does not modify the BCT.")(
       "instance-id", po::value<std::string>(&instanceId)->default_value(""),
       "identifier written into the experiment logs (defaults to the input filename)")(
       "log-dir", po::value<std::string>(&logDir)->default_value(""),
@@ -440,6 +449,17 @@ int main(int argc, char *argv[]) {
   ugv::LowLevelStrategy strategy = (mode == "clcbs")
                                        ? ugv::LowLevelStrategy::FULL_HORIZON
                                        : ugv::LowLevelStrategy::LCBR;
+  // The paired probe is meaningful only for LCBR.
+  // Silently disable it for the CL-CBS baseline.
+  if (strategy == ugv::LowLevelStrategy::FULL_HORIZON &&
+      pairedProbe) {
+
+    std::cerr
+        << "WARNING: --paired-probe is only applicable to LCBR. "
+        << "Disabling paired probe for CL-CBS.\n";
+
+    pairedProbe = false;
+  }
 
   readAgentConfig(vehicleConfig, deltaWSteps);
   Constants::maxLowLevelExpansions = maxLowLevelExpansions;
@@ -620,6 +640,8 @@ int main(int argc, char *argv[]) {
     instanceLog.delta_w_steps = Constants::repairMarginSteps;
     instanceLog.delta_T_steps = Constants::constraintWaitTime;
     instanceLog.success = false;
+    instanceLog.timeout = false;
+    instanceLog.status ="PRECHECK_INFEASIBLE";
     totalTimer.stop();
     instanceLog.total_runtime_s = totalTimer.elapsedSeconds();
     if (instanceLogger) instanceLogger->writeRow(instanceLog.toCsvRow());
@@ -637,11 +659,23 @@ int main(int argc, char *argv[]) {
             << ", delta_w=" << Constants::repairMarginSteps
             << " steps, timeout=" << timeoutSeconds << "s]...\n";
   EnvironmentT env(dimx, dimy, obstacles, dynamic_obstacles, assignedGoals);
-  ugv::BodyConflictTree<State, Action, double, Conflict, Constraint, Constraints,
-                       EnvironmentT>
-      bct(env, strategy, Constants::repairMarginSteps,
-         Constants::constraintWaitTime, instanceId, queryLogger.get(),
-         timeoutSeconds);
+  ugv::BodyConflictTree<
+    State,
+    Action,
+    double,
+    Conflict,
+    Constraint,
+    Constraints,
+    EnvironmentT>
+    bct(
+        env,
+        strategy,
+        Constants::repairMarginSteps,
+        Constants::constraintWaitTime,
+        instanceId,
+        queryLogger.get(),
+        timeoutSeconds,
+        pairedProbe);
 
   std::vector<PlanResult<State, Action, double>> solution;
   bool success = bct.search(startStates, gamma0, solution, instanceLog);
