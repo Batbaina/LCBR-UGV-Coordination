@@ -1,0 +1,33 @@
+# ============================================================
+# LCBR vs CL-CBS - Validation Pilot - 100x100
+# ============================================================
+
+experiment: main_comparison_validation_100x100
+
+binary: build/ugv_coordination
+vehicle_config: config/vehicle_config.yaml
+
+instances:
+  - dir: benchmark/map100by100/agents5/obstacle
+  - dir: benchmark/map100by100/agents10/obstacle
+  - dir: benchmark/map100by100/agents20/obstacle
+  - dir: benchmark/map100by100/agents30/obstacle
+
+pattern: "*.yaml"
+
+# PILOT ONLY
+max_instances_per_dir: 1
+
+methods:
+  - clcbs
+  - lcbr
+
+# Fixed window
+delta_w:
+  - 10
+
+# Same-conflict Local vs Full experiment
+paired_probe: true
+
+timeout: 180
+max_low_level_expansions: 150000

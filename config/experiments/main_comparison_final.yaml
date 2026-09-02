@@ -1,0 +1,141 @@
+# ============================================================
+# FINAL EXPERIMENT
+# CL-CBS vs LCBR
+# ============================================================
+#
+# Experimental questions:
+#
+# Q0 - Dataset eligibility / precheck feasibility
+# Q1 - Does LCBR preserve solver success?
+# Q2 - How often does local repair avoid full replanning?
+# Q3 - Same conflict: Local SHA* vs Full SHA*
+# Q4 - Same-conflict trajectory-quality comparison
+# Q5 - Effect on BCT / downstream low-level effort
+# Q6 - Complete solver computational performance
+# Q7 - Final solution quality
+#
+# IMPORTANT:
+# delta_w is fixed.
+# This is NOT a delta_w sensitivity experiment.
+# ============================================================
+
+experiment: main_comparison
+
+binary: build/ugv_coordination
+
+vehicle_config: config/vehicle_config.yaml
+
+
+# ============================================================
+# BENCHMARK CONFIGURATIONS
+# ============================================================
+
+instances:
+
+  # ----------------------------------------------------------
+  # 50 x 50
+  # ----------------------------------------------------------
+
+  - dir: benchmark/map50by50/agents5/obstacle
+
+  - dir: benchmark/map50by50/agents10/obstacle
+
+  - dir: benchmark/map50by50/agents15/obstacle
+
+  - dir: benchmark/map50by50/agents20/obstacle
+
+
+  # ----------------------------------------------------------
+  # 100 x 100
+  # ----------------------------------------------------------
+
+  - dir: benchmark/map100by100/agents5/obstacle
+
+  - dir: benchmark/map100by100/agents10/obstacle
+
+  - dir: benchmark/map100by100/agents20/obstacle
+
+  - dir: benchmark/map100by100/agents30/obstacle
+
+
+  # ----------------------------------------------------------
+  # 300 x 300
+  # ----------------------------------------------------------
+
+  - dir: benchmark/map300by300/agents10/obstacle
+
+  - dir: benchmark/map300by300/agents20/obstacle
+
+  - dir: benchmark/map300by300/agents30/obstacle
+
+
+# ============================================================
+# INSTANCE SELECTION
+# ============================================================
+
+pattern: "*.yaml"
+
+# Final campaign:
+# first 50 deterministically sorted instances from each cell.
+
+max_instances_per_dir: 50
+
+
+# ============================================================
+# METHODS
+# ============================================================
+
+methods:
+  - clcbs
+  - lcbr
+
+
+# ============================================================
+# LCBR PARAMETER
+# ============================================================
+
+# Fixed throughout the main validation.
+
+delta_w:
+  - 10
+
+
+# ============================================================
+# PAIRED SAME-CONFLICT EXPERIMENT
+# ============================================================
+#
+# For each normal LCBR experiment, an independent diagnostic
+# LCBR execution is performed.
+#
+# For every applicable local branch:
+#
+#     SAME instance
+#     SAME BCT child
+#     SAME constrained robot
+#     SAME accumulated constraints
+#
+#             Local SHA*
+#                 vs
+#          Full-horizon SHA*
+#
+# The counterfactual Full query does NOT modify the actual
+# LCBR/BCT execution.
+#
+# Used for Q3/Q4 only.
+# ============================================================
+
+paired_probe: true
+
+
+# ============================================================
+# STAGE-3 BUDGET
+# ============================================================
+
+timeout: 180
+
+
+# ============================================================
+# SHA* LIMIT
+# ============================================================
+
+max_low_level_expansions: 150000

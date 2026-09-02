@@ -1,0 +1,129 @@
+# ============================================================
+# LCBR vs CL-CBS - Conference Validation
+# Pilot experiment
+# ============================================================
+#
+# Purpose:
+#
+# Q1 - Does LCBR preserve solver success?
+# Q2 - How often is full replanning unnecessary?
+# Q3 - Same conflict: Local SHA* vs Full SHA*
+# Q4 - Does local repair preserve trajectory quality?
+# Q5 - Does local repair increase BCT / low-level effort?
+# Q6 - Is the complete LCBR solver computationally cheaper?
+# Q7 - Is final solution quality preserved?
+#
+# IMPORTANT:
+# delta_w is FIXED in this experiment.
+# This is NOT a delta_w ablation study.
+# ============================================================
+
+experiment: main_comparison_validation
+
+# ------------------------------------------------------------
+# Executable
+# ------------------------------------------------------------
+
+binary: build/ugv_coordination
+
+vehicle_config: config/vehicle_config.yaml
+
+
+# ------------------------------------------------------------
+# Benchmark configurations
+# ------------------------------------------------------------
+#
+# PILOT:
+# Use only 1 instance from each configuration.
+#
+# After validation of the complete logging pipeline:
+#
+#     max_instances_per_dir: 50
+#
+# ------------------------------------------------------------
+
+instances:
+
+  # ==========================================================
+  # 50 x 50
+  # ==========================================================
+
+  - dir: benchmark/map50by50/agents5/obstacle
+
+  - dir: benchmark/map50by50/agents10/obstacle
+
+  - dir: benchmark/map50by50/agents15/obstacle
+
+  - dir: benchmark/map50by50/agents20/obstacle
+
+
+pattern: "*.yaml"
+
+
+# ------------------------------------------------------------
+# Number of instances per configuration
+# ------------------------------------------------------------
+
+max_instances_per_dir: 1
+
+
+# ------------------------------------------------------------
+# Methods
+# ------------------------------------------------------------
+
+methods:
+  - clcbs
+  - lcbr
+
+
+# ------------------------------------------------------------
+# LCBR repair window
+# ------------------------------------------------------------
+#
+# Fixed for the current hypothesis-validation experiment.
+# We are NOT studying sensitivity to delta_w yet.
+# ------------------------------------------------------------
+
+delta_w:
+  - 10
+
+
+# ------------------------------------------------------------
+# Same-conflict paired experiment
+# ------------------------------------------------------------
+#
+# true:
+#
+# In addition to normal CL-CBS and normal LCBR, the runner
+# executes an independent LCBR diagnostic run.
+#
+# At every applicable LCBR local branch:
+#
+#       SAME BCT child
+#       SAME robot
+#       SAME accumulated constraints
+#
+#           Local SHA*
+#               vs
+#           Full SHA*
+#
+# The full query is counterfactual and does NOT modify the BCT.
+#
+# Used ONLY for Q3/Q4.
+# ------------------------------------------------------------
+
+paired_probe: true
+
+
+# ------------------------------------------------------------
+# Stage-3 timeout
+# ------------------------------------------------------------
+
+timeout: 180
+
+
+# ------------------------------------------------------------
+# Maximum SHA* expansions per low-level query
+# ------------------------------------------------------------
+
+max_low_level_expansions: 150000
