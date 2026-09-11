@@ -1,23 +1,73 @@
 # LCBR — Multi-UGV Coordination and Gazebo Validation
 
-**Local Conflict-Based Trajectory Repair (LCBR)** for coordinated motion planning of multiple Ackermann-steered UGVs, with an end-to-end validation framework in **ROS 2 + Gazebo**.
+**Local Conflict-Based Trajectory Repair (LCBR)** for coordinated motion planning of multiple Ackermann-steered UGVs, with an end-to-end execution and validation framework in **ROS 2 + Gazebo**.
 
 This repository contains two complementary components:
 
-1. **`algorithm/`** — the planning and coordination framework:
+1. **`algorithm/`** — planning and coordination:
    - SHA* nominal trajectory generation,
    - trajectory-cost-based task allocation,
    - CL-CBS baseline,
-   - Local Conflict-Based Trajectory Repair (LCBR).
+   - Local Conflict-Based Trajectory Repair (LCBR),
+   - experimental evaluation and validation.
 
-2. **`simulation/`** — the execution and validation framework:
+2. **`simulation/`** — execution and physical validation:
    - exact reconstruction of SHA* motion primitives,
-   - multi-UGV temporal execution,
+   - dense trajectory generation,
+   - synchronized multi-UGV temporal execution,
    - Pure Pursuit trajectory tracking,
    - Ackermann vehicle models,
    - ROS 2 / Gazebo simulation.
 
-The complete workflow is:
+---
+
+## LCBR Examples
+
+<table align="center">
+<tr>
+  <th>Example A — Grouped / Scattered</th>
+  <th>Example B — Grouped / Wall</th>
+  <th>Example C — Grouped / Crop Rows</th>
+</tr>
+
+<tr>
+  <td align="center">
+    <img
+      src="algorithm/docs/images/instance1_grouped_scattered_lcbr_dw10.gif"
+      width="280"
+      alt="LCBR grouped-scattered example">
+  </td>
+
+  <td align="center">
+    <img
+      src="algorithm/docs/images/instance2_grouped_wall_lcbr_dw10.gif"
+      width="280"
+      alt="LCBR grouped-wall example">
+  </td>
+
+  <td align="center">
+    <img
+      src="algorithm/docs/images/instance3_grouped_croprows_lcbr_dw10.gif"
+      width="280"
+      alt="LCBR crop-row example">
+  </td>
+</tr>
+</table>
+
+<p align="center">
+  <em>
+    Three six-UGV examples through the complete Stage 1 → Stage 2 → Stage 3
+    pipeline, showing the final coordinated trajectories obtained with LCBR
+    using a bounded local repair window
+    (<strong>δ<sub>w</sub> = 10</strong>).
+  </em>
+</p>
+
+---
+
+# Complete Framework
+
+The complete workflow implemented in this repository is:
 
 ```text
 Scenario
@@ -30,6 +80,9 @@ Trajectory-cost-based task allocation
    │
    ▼
 Nominal multi-UGV trajectories
+   │
+   ▼
+Conflict detection
    │
    ▼
 CL-CBS or LCBR conflict resolution
@@ -51,28 +104,74 @@ Pure Pursuit controllers
    │
    ▼
 ROS 2 / Gazebo Ackermann execution
+   │
+   ▼
+Odometry feedback
+```
+
+The planning and execution layers are intentionally separated:
+
+```text
+┌────────────────────────────────────────────┐
+│                 algorithm/                 │
+│                                            │
+│  SHA*                                      │
+│    ↓                                       │
+│  Task Allocation                           │
+│    ↓                                       │
+│  Nominal Multi-UGV Trajectories            │
+│    ↓                                       │
+│  CL-CBS / LCBR                             │
+│    ↓                                       │
+│  final_lcbr.yaml                           │
+└─────────────────────┬──────────────────────┘
+                      │
+                      │ trajectory interface
+                      ▼
+┌────────────────────────────────────────────┐
+│                simulation/                 │
+│                                            │
+│  SHA* Primitive Reconstruction             │
+│    ↓                                       │
+│  Dense References                          │
+│    ↓                                       │
+│  Multi-UGV Temporal Scheduler              │
+│    ↓                                       │
+│  Pure Pursuit                              │
+│    ↓                                       │
+│  Ackermann Gazebo Models                   │
+│    ↓                                       │
+│  Physical Execution Validation             │
+└────────────────────────────────────────────┘
 ```
 
 ---
 
-## 1. Overview
+# 1. Overview
 
 The planning framework is built on top of **CL-CBS**:
 
 > Wen et al., *CL-MAPF: Multi-Agent Path Finding for Car-Like Robots with Kinematic and Spatiotemporal Constraints*, Robotics and Autonomous Systems, 2022.
 
+Original repository:
+
+https://github.com/APRIL-ZJU/CL-CBS
+
 The conflict-resolution stage supports two interchangeable strategies:
 
-- **`clcbs`** — CL-CBS baseline using full-horizon low-level replanning for each Body Conflict Tree branch.
+- **`clcbs`** — the CL-CBS baseline, using full-horizon low-level replanning for each Body Conflict Tree branch.
+
 - **`lcbr`** — **Local Conflict-Based Trajectory Repair**, the proposed approach, which attempts bounded local replanning around a detected conflict while retaining full-horizon replanning as fallback.
 
-Both approaches use the same Body Conflict Tree logic and the same SHA* low-level planning machinery. The main experimental difference is therefore the replanning mechanism used after a conflict is detected.
+Both approaches use the same Body Conflict Tree logic and the same SHA* low-level planning machinery.
 
-The Gazebo component does **not** perform a second planning stage. It executes the trajectories produced by the planning framework using physical Ackermann vehicle models and closed-loop trajectory tracking.
+The main experimental difference is therefore the replanning mechanism used after a conflict is detected.
+
+The Gazebo component does **not** perform a second planning stage. It executes the trajectories generated by the planning framework using Ackermann vehicle models and closed-loop trajectory tracking.
 
 ---
 
-## 2. Repository Structure
+# 2. Repository Structure
 
 ```text
 UGV-Coordination/
@@ -89,11 +188,14 @@ UGV-Coordination/
 │   ├── include/
 │   │   ├── body_conflict_tree.hpp
 │   │   ├── environment.hpp
+│   │   ├── experiment_logger.hpp
 │   │   ├── hybrid_astar.hpp
 │   │   ├── local_repair.hpp
 │   │   ├── low_level_environment.hpp
+│   │   ├── neighbor.hpp
+│   │   ├── planresult.hpp
 │   │   ├── task_allocation.hpp
-│   │   └── ...
+│   │   └── timer.hpp
 │   │
 │   ├── src/
 │   │   └── ugv_coordination.cpp
@@ -135,7 +237,7 @@ UGV-Coordination/
             └── setup.cfg
 ```
 
-Generated ROS 2 directories
+The following generated ROS 2 directories are intentionally excluded from version control:
 
 ```text
 simulation/build/
@@ -143,23 +245,21 @@ simulation/install/
 simulation/log/
 ```
 
-are intentionally excluded from version control.
-
-The original benchmark dataset and generated experimental solutions are also kept locally and excluded from Git.
+The original benchmark dataset and generated experiment solutions are also kept locally and excluded from Git.
 
 ---
 
 # Part I — Planning and Coordination
 
-## 3. Planning Pipeline
+# 3. Planning Pipeline
 
 The algorithm implements three main stages.
 
-### Stage 1 — Nominal Trajectory Generation
+## Stage 1 — Nominal Trajectory Generation
 
-For every UGV–POI pair, SHA* computes a kinematically feasible trajectory and its path length.
+For every UGV–POI pair, SHA* computes a kinematically feasible trajectory and its corresponding path length.
 
-For \(M\) robots and \(Q\) POIs, this produces an \(M\times Q\) trajectory-cost matrix
+For \(M\) robots and \(Q\) POIs, this produces an \(M \times Q\) trajectory-cost matrix:
 
 \[
 L_{ij},
@@ -167,70 +267,87 @@ L_{ij},
 
 where \(L_{ij}\) is the SHA*-derived path cost for assigning robot \(i\) to POI \(j\).
 
+This stage therefore accounts for the actual kinematic feasibility of the car-like UGV rather than relying only on Euclidean distance.
+
 ---
 
-### Stage 2 — Task Allocation
+## Stage 2 — Task Allocation
 
 The assignment problem is solved using the Hungarian algorithm.
 
-The objective is based on the actual SHA* trajectory costs rather than Euclidean distance.
+The assignment objective is based on the actual SHA*-derived trajectory costs.
 
-The resulting robot-to-POI assignment determines the nominal trajectory set
+The resulting robot-to-POI assignment determines the nominal trajectory set:
 
 \[
 \Gamma^0.
 \]
 
+At this point, each UGV has a nominal kinematically feasible trajectory toward its assigned goal.
+
+However, the trajectories have not yet been coordinated with respect to inter-robot conflicts.
+
 ---
 
-### Stage 3 — Multi-UGV Conflict Resolution
+## Stage 3 — Multi-UGV Conflict Resolution
 
 The nominal trajectories are checked for spatiotemporal conflicts.
 
-Two strategies are available:
+Two conflict-resolution strategies are available.
+
+### CL-CBS baseline
 
 ```text
 --mode clcbs
 ```
 
-for the CL-CBS baseline, and
+The baseline performs full-horizon low-level replanning when a constraint is introduced in the Body Conflict Tree.
+
+### LCBR
 
 ```text
 --mode lcbr
 ```
 
-for Local Conflict-Based Trajectory Repair.
-
-LCBR attempts to repair a conflict within a bounded local temporal window controlled by
+LCBR attempts to repair the affected portion of the trajectory within a bounded local temporal window controlled by:
 
 \[
 \delta_w.
 \]
 
-If the bounded repair cannot produce a valid solution, the original full-horizon query remains available as fallback.
+If the bounded local repair cannot produce a valid solution, the original full-horizon replanning mechanism remains available as fallback.
 
 ---
 
-## 4. Relationship to CL-CBS
+# 4. Relationship to CL-CBS
 
 | File | Status |
 |---|---|
-| `algorithm/include/neighbor.hpp`, `planresult.hpp`, `timer.hpp`, `hybrid_astar.hpp` | CL-CBS low-level machinery; documentation and defensive/experimental additions where noted |
-| `algorithm/include/environment.hpp` | adapted for local-goal override, query instrumentation and state-validity access |
+| `algorithm/include/neighbor.hpp` | CL-CBS low-level machinery |
+| `algorithm/include/planresult.hpp` | CL-CBS low-level machinery |
+| `algorithm/include/timer.hpp` | CL-CBS utility |
+| `algorithm/include/hybrid_astar.hpp` | SHA* low-level planning machinery, with documented defensive/experimental additions |
+| `algorithm/include/environment.hpp` | adapted for local-goal override, instrumentation and state-validity access |
 | `algorithm/include/low_level_environment.hpp` | shared low-level environment |
-| `algorithm/include/task_allocation.hpp` | task-allocation and nominal-generation support |
+| `algorithm/include/task_allocation.hpp` | nominal generation and task allocation |
 | `algorithm/include/local_repair.hpp` | LCBR implementation |
 | `algorithm/include/body_conflict_tree.hpp` | Body Conflict Tree with runtime-selectable low-level strategy |
 | `algorithm/include/experiment_logger.hpp` | experiment/query logging |
 | `algorithm/src/ugv_coordination.cpp` | complete Stage 1 → 2 → 3 pipeline |
 | `algorithm/tools/visualize.py` | original visualization utility |
-| `algorithm/tools/visualize_v2.py` | extended visualization, static plots, comparisons and GIF export |
+| `algorithm/tools/visualize_v2.py` | extended visualization, static plots, solver comparison and GIF export |
+
+Additional implementation details are available in:
+
+- [`algorithm/docs/LCBR.md`](algorithm/docs/LCBR.md)
+- [`algorithm/docs/EXPERIMENTS.md`](algorithm/docs/EXPERIMENTS.md)
+- [`algorithm/docs/REPRODUCIBILITY.md`](algorithm/docs/REPRODUCIBILITY.md)
 
 ---
 
-## 5. Build the Algorithm
+# 5. Build the Algorithm
 
-### Dependencies
+## Dependencies
 
 On Ubuntu:
 
@@ -244,7 +361,9 @@ sudo apt-get install \
     libeigen3-dev
 ```
 
-### Build
+## Build
+
+From the repository root:
 
 ```bash
 cd algorithm
@@ -267,11 +386,19 @@ algorithm/build/ugv_coordination
 
 ---
 
-## 6. Example Planner Execution
+# 6. Example Planner Execution
 
-From `algorithm/`:
+From:
 
 ```bash
+cd algorithm
+```
+
+run:
+
+```bash
+mkdir -p runs/full_pipeline/corridors_6ugv
+
 ./build/ugv_coordination \
   --input experiments/full_pipeline/instances/paper_corridors_6ugv.yaml \
   --output runs/full_pipeline/corridors_6ugv/final_lcbr.yaml \
@@ -286,17 +413,27 @@ This produces:
 
 ```text
 nominal.yaml
+    │
     └── nominal trajectories before conflict resolution
 
 final_lcbr.yaml
+    │
     └── final coordinated trajectories after LCBR
 ```
 
 ---
 
-## 7. Visualization — Before and After LCBR
+# 7. Visualization — Before and After LCBR
 
-### Before LCBR
+The primary visualization utility is:
+
+```text
+algorithm/tools/visualize_v2.py
+```
+
+It supports static trajectory figures, animated videos, GIF export and solver comparison.
+
+## Before LCBR
 
 ```bash
 python3 tools/visualize_v2.py \
@@ -306,7 +443,7 @@ python3 tools/visualize_v2.py \
   --speed 4
 ```
 
-### After LCBR
+## After LCBR
 
 ```bash
 python3 tools/visualize_v2.py \
@@ -316,22 +453,22 @@ python3 tools/visualize_v2.py \
   --speed 4
 ```
 
-`--speed` changes only animation playback speed; it does not modify the planned trajectories.
+`--speed` modifies only the animation playback speed. It does not modify the planned trajectories or their temporal structure.
 
 ---
 
-## 8. Main Command-Line Options
+# 8. Main Command-Line Options
 
 | Flag | Meaning |
 |---|---|
 | `-i, --input` | input scenario YAML |
 | `-o, --output` | final solution YAML |
-| `--nominal-output` | nominal solution before conflict resolution |
+| `--nominal-output` | nominal trajectory set before conflict resolution |
 | `-m, --mode` | `clcbs` or `lcbr` |
-| `--delta_w_steps` | LCBR local repair margin in \(T_s\) steps |
+| `--delta_w_steps` | LCBR repair margin in \(T_s\) steps |
 | `--timeout` | Stage-3 wall-clock budget |
 | `--max-low-level-expansions` | maximum SHA* expansions for one low-level query |
-| `--cost-matrix-csv` | export the \(M\times Q\) SHA* cost matrix |
+| `--cost-matrix-csv` | export the \(M \times Q\) SHA* trajectory-cost matrix |
 | `--assignment-csv` | export the resolved robot-to-POI assignment |
 | `--instance-id` | experiment identifier |
 | `--log-dir` | directory for experiment logs |
@@ -339,22 +476,29 @@ python3 tools/visualize_v2.py \
 
 ---
 
-# Part II — ROS 2 / Gazebo Validation
+# Part II — Planner-to-Gazebo Execution
 
-## 9. Purpose of the Simulation Layer
+# 9. Purpose of the Simulation Layer
 
-The simulation layer validates whether the trajectories generated by the planning framework can be executed by physical Ackermann-steered vehicle models.
+The simulation layer evaluates the execution of the trajectories generated by the planning framework using Ackermann-steered vehicle models.
 
-The simulation does not replace SHA*, task allocation, CL-CBS or LCBR.
+The simulation does not replace:
+
+- SHA*,
+- task allocation,
+- CL-CBS,
+- LCBR.
 
 Instead:
 
 ```text
-Planner
-    decides WHERE and WHEN the UGV should move
+Planning layer
+    │
+    └── determines WHERE and WHEN the UGV should move
 
 Execution layer
-    determines HOW the Ackermann vehicle follows that reference
+    │
+    └── determines HOW the physical Ackermann model follows the reference
 ```
 
 The execution architecture is:
@@ -363,13 +507,13 @@ The execution architecture is:
 final_lcbr.yaml
        │
        ▼
-Exact primitive reconstruction
+Exact SHA* primitive reconstruction
        │
        ▼
 Dense trajectory references
        │
        ▼
-Temporal multi-UGV scheduler
+Multi-UGV temporal scheduler
        │
        ▼
 Pure Pursuit
@@ -386,20 +530,20 @@ Vehicle physics
        ▼
 Odometry
        │
-       └────────── feedback to controller
+       └──────────────► closed-loop feedback
 ```
 
 ---
 
-## 10. Planner-to-Simulation Interface
+# 10. Planner-to-Simulation Interface
 
-The main interface between the two components is:
+The interface between the planning and execution layers is:
 
 ```text
 final_lcbr.yaml
 ```
 
-For every agent, the trajectory contains states of the form:
+For each agent, the trajectory contains states of the form:
 
 ```yaml
 x: ...
@@ -409,27 +553,42 @@ t: ...
 action: ...
 ```
 
-The `action` field identifies the SHA* motion primitive.
+The state provides:
+
+- position \(x,y\),
+- vehicle orientation `yaw`,
+- discrete planning time \(t\),
+- the SHA* motion primitive used for the next transition.
 
 The execution layer interprets the actions as:
 
-| Action | Motion |
-|---:|---|
-| 0 | forward straight |
-| 1 | forward turning primitive |
-| 2 | forward turning primitive |
-| 3 | reverse straight |
-| 4 | reverse turning primitive |
-| 5 | reverse turning primitive |
-| 6 | WAIT |
+| Action | Motion class | Direction |
+|---:|---|---|
+| 0 | straight | forward |
+| 1 | turning primitive | forward |
+| 2 | turning primitive | forward |
+| 3 | straight | reverse |
+| 4 | turning primitive | reverse |
+| 5 | turning primitive | reverse |
+| 6 | stationary primitive | WAIT |
+
+The `action` field is therefore essential for reproducing the original SHA* motion rather than treating the YAML states as arbitrary geometric waypoints.
 
 ---
 
-## 11. Dense SHA* Primitive Reconstruction
+# 11. Dense SHA* Primitive Reconstruction
 
-The discrete planner states are not simply connected using arbitrary straight-line interpolation.
+The states contained in `final_lcbr.yaml` are discrete planner states.
 
-`dense_reference.py` reconstructs the geometry of the original SHA* primitives.
+They are **not** connected using arbitrary straight-line interpolation.
+
+Instead:
+
+```text
+simulation/src/ugv_gazebo/ugv_gazebo/dense_reference.py
+```
+
+reconstructs the geometry of each original SHA* primitive.
 
 Run:
 
@@ -439,27 +598,55 @@ cd simulation/src/ugv_gazebo
 python3 ugv_gazebo/dense_reference.py
 ```
 
-For a turning primitive, the reconstruction uses the planner turning radius
+The current implementation samples each primitive into multiple intermediate reference points.
+
+For turning primitives, the reconstruction uses the same minimum turning radius as the planner:
 
 \[
-R = 3\,\text{m}.
+R = 3\,\mathrm{m}.
 \]
 
-Intermediate points are sampled along the corresponding circular primitive.
+For an intermediate angular displacement \(\delta\psi\), the local circular motion is reconstructed from:
 
-For a straight primitive, intermediate points are sampled along the straight motion.
+\[
+dx_{\mathrm{local}}
+=
+R\sin(|\delta\psi|),
+\]
+
+and:
+
+\[
+dy_{\mathrm{local}}
+=
+\pm R\left(1-\cos(|\delta\psi|)\right).
+\]
+
+The sign depends on the corresponding SHA* primitive.
+
+For reverse primitives, the longitudinal displacement is reversed.
+
+The local displacement is then transformed into the planner/world coordinate frame using the starting yaw of the primitive.
+
+For straight primitives, intermediate states are sampled along the original straight motion.
 
 For a WAIT primitive:
 
 \[
-x_j=x_0,\qquad
-y_j=y_0,\qquad
+x_j=x_0,
+\]
+
+\[
+y_j=y_0,
+\]
+
+\[
 \psi_j=\psi_0,
 \]
 
 while time continues to advance.
 
-The generated references are:
+The generated dense references are:
 
 ```text
 trajectories/dense/
@@ -471,11 +658,55 @@ trajectories/dense/
 └── agent5_dense.yaml
 ```
 
-The reconstruction includes an endpoint audit to verify that each dense primitive terminates at the corresponding SHA* state.
+The reconstruction includes an endpoint audit that compares each analytically reconstructed primitive endpoint with the original SHA* endpoint.
+
+This ensures that densification samples the planner trajectory rather than introducing a new path.
 
 ---
 
-## 12. Gazebo Scenario Generation
+# 12. From Planner Output to Gazebo
+
+A new LCBR solution can be transferred to the simulation package using:
+
+```bash
+cp \
+algorithm/runs/full_pipeline/corridors_6ugv/final_lcbr.yaml \
+simulation/src/ugv_gazebo/trajectories/final_lcbr.yaml
+```
+
+Then regenerate the dense references:
+
+```bash
+cd simulation/src/ugv_gazebo
+
+python3 ugv_gazebo/dense_reference.py
+```
+
+The complete interface is therefore:
+
+```text
+algorithm/
+   │
+   └── runs/.../final_lcbr.yaml
+                   │
+                   ▼
+simulation/
+   │
+   └── trajectories/final_lcbr.yaml
+                   │
+                   ▼
+             dense_reference.py
+                   │
+                   ▼
+       agent0_dense.yaml
+       agent1_dense.yaml
+       ...
+       agent5_dense.yaml
+```
+
+---
+
+# 13. Gazebo Scenario Generation
 
 For the six-UGV corridor experiment:
 
@@ -485,16 +716,16 @@ cd simulation/src/ugv_gazebo
 python3 tools/generate_corridors_world.py
 ```
 
-This generates:
-
-```text
-worlds/paper_corridors_6ugv.sdf
-```
-
-from:
+The script uses:
 
 ```text
 scenarios/paper_corridors_6ugv.yaml
+```
+
+and generates:
+
+```text
+worlds/paper_corridors_6ugv.sdf
 ```
 
 The current corridor scenario contains:
@@ -506,7 +737,7 @@ Starts    : 6
 Goals     : 6
 ```
 
-with the mapping:
+The planner-to-Gazebo start mapping is:
 
 | Planner agent | Gazebo model | Start |
 |---|---|---|
@@ -519,11 +750,11 @@ with the mapping:
 
 ---
 
-## 13. Vehicle Model
+# 14. Ackermann Vehicle Model
 
-Each Gazebo UGV uses an Ackermann steering model.
+Each simulated UGV uses an Ackermann steering model.
 
-The principal geometric parameters are:
+The principal vehicle parameters are:
 
 ```text
 wheel base       = 1.30 m
@@ -532,13 +763,18 @@ wheel radius     = 0.25 m
 turning radius   = 3.0 m
 ```
 
-The Gazebo steering limit is chosen consistently with the planner turning radius.
+The Gazebo steering limit is selected consistently with the planner minimum turning radius.
 
-Each UGV exposes independent command and odometry channels:
+The vehicle model uses the rear axle center as the reference convention to remain consistent with the planning state representation.
+
+Each UGV exposes independent ROS/Gazebo interfaces:
 
 ```text
 /ugv_1/cmd_vel
 /model/ugv_1/odometry
+
+/ugv_2/cmd_vel
+/model/ugv_2/odometry
 
 ...
 
@@ -548,9 +784,182 @@ Each UGV exposes independent command and odometry channels:
 
 ---
 
-## 14. Multi-UGV Execution
+# 15. Closed-Loop Pure Pursuit Tracking
 
-`multi_ugv_tracker.py` executes the six dense references.
+Each robot is controlled independently using a Pure Pursuit trajectory tracker.
+
+The controller receives:
+
+```text
+dense trajectory reference
+        +
+Gazebo odometry
+```
+
+and computes a longitudinal and angular command:
+
+\[
+(v,\omega).
+\]
+
+For a target point with heading error \(\alpha\) and lookahead distance \(L_d\), the Pure Pursuit curvature is based on:
+
+\[
+\kappa
+=
+\frac{2\sin(\alpha)}{L_d}.
+\]
+
+The angular command is related to the longitudinal velocity through:
+
+\[
+\omega = v\kappa.
+\]
+
+The resulting command is sent to the corresponding Gazebo Ackermann steering system.
+
+The controller therefore operates in closed loop:
+
+```text
+Dense reference
+      │
+      ▼
+Pure Pursuit
+      │
+      ▼
+(v, omega)
+      │
+      ▼
+Ackermann model
+      │
+      ▼
+Gazebo physics
+      │
+      ▼
+Odometry
+      │
+      └────────────► Pure Pursuit
+```
+
+---
+
+# 16. Forward and Reverse Execution
+
+The direction of motion is preserved from the SHA* primitive.
+
+For forward primitives:
+
+\[
+v>0.
+\]
+
+For reverse primitives:
+
+\[
+v<0.
+\]
+
+Direction changes are handled explicitly by the execution layer.
+
+Typical transitions are:
+
+```text
+forward
+   ↓
+stop
+   ↓
+reverse
+```
+
+or:
+
+```text
+reverse
+   ↓
+stop
+   ↓
+forward
+```
+
+This prevents the controller from treating forward and reverse portions of the planner trajectory as equivalent geometric segments.
+
+---
+
+# 17. WAIT Execution
+
+An LCBR WAIT action corresponds to:
+
+```text
+action = 6
+```
+
+During WAIT:
+
+\[
+v=0,
+\qquad
+\omega=0.
+\]
+
+The vehicle remains at the same physical pose while planning time advances.
+
+The execution layer explicitly detects contiguous WAIT intervals and releases the robot once the scheduled WAIT interval has elapsed.
+
+Typical log messages include:
+
+```text
+LCBR WAIT
+WAIT RELEASE
+```
+
+WAIT is therefore treated as a temporal coordination primitive rather than as a duplicated geometric waypoint.
+
+---
+
+# 18. Multi-UGV Temporal Coordination
+
+Geometric trajectory tracking alone is insufficient for executing a multi-robot LCBR solution.
+
+LCBR contains temporal coordination decisions that must also be preserved during physical execution.
+
+The multi-UGV execution layer therefore preserves:
+
+- forward motion,
+- reverse motion,
+- WAIT actions,
+- WAIT release,
+- direction switches,
+- temporal-frontier constraints.
+
+Gazebo odometry timestamps provide a common simulation-time basis for all six UGVs.
+
+If a robot reaches a future part of its trajectory before that part is temporally admissible, it is stopped at the current temporal frontier.
+
+Typical logs include:
+
+```text
+TIME FRONTIER HOLD
+```
+
+The execution architecture therefore attempts to preserve both:
+
+```text
+geometric reference
+        +
+temporal coordination
+```
+
+from the LCBR solution.
+
+---
+
+# 19. Multi-UGV Tracker
+
+The multi-UGV execution node is:
+
+```text
+simulation/src/ugv_gazebo/ugv_gazebo/multi_ugv_tracker.py
+```
 
 The mapping is:
 
@@ -563,61 +972,26 @@ agent4_dense.yaml -> ugv_5
 agent5_dense.yaml -> ugv_6
 ```
 
-Each robot uses a closed-loop Pure Pursuit controller.
-
-The controller receives:
+The node simultaneously manages:
 
 ```text
-dense reference + Gazebo odometry
-```
-
-and generates:
-
-\[
-(v,\omega).
-\]
-
-These commands are sent to the corresponding Gazebo Ackermann steering system.
-
----
-
-## 15. Temporal Coordination
-
-Geometric tracking alone is insufficient for executing a multi-robot LCBR solution because LCBR also contains temporal coordination decisions.
-
-The execution layer therefore preserves:
-
-- forward motion,
-- reverse motion,
-- WAIT actions,
-- WAIT release,
-- direction changes,
-- temporal-frontier holds.
-
-Gazebo odometry timestamps provide the common simulation-time basis for the six robots.
-
-A robot that reaches a future portion of its reference too early is stopped by the temporal frontier until that trajectory segment becomes temporally admissible.
-
-Typical execution messages include:
-
-```text
-DIRECTION SWITCH
-LCBR WAIT
-WAIT RELEASE
-TIME FRONTIER HOLD
-COMPLETE
+6 trajectory references
+6 odometry streams
+6 command publishers
+6 Pure Pursuit controllers
+1 common temporal coordination mechanism
 ```
 
 ---
 
-## 16. Build the ROS 2 / Gazebo Simulation
+# 20. Build the ROS 2 / Gazebo Simulation
 
 Requirements include:
 
-- Ubuntu
-- ROS 2 Jazzy
-- Gazebo / Gazebo Sim
-- `ros_gz_bridge`
+- Ubuntu,
+- ROS 2 Jazzy,
+- Gazebo / Gazebo Sim,
+- `ros_gz_bridge`.
 
 From the repository root:
 
@@ -645,13 +1019,19 @@ are ignored by Git.
 
 ---
 
-## 17. Launch the Simulation
+# 21. Launch the Gazebo Simulation
 
-### Terminal 1 — Gazebo + ROS/Gazebo bridges
+## Terminal 1 — Gazebo + six UGVs + ROS/Gazebo bridge
+
+From:
 
 ```bash
 cd simulation
+```
 
+run:
+
+```bash
 source /opt/ros/jazzy/setup.bash
 source install/setup.bash
 
@@ -660,7 +1040,11 @@ ros2 launch ugv_gazebo simulation.launch.py
 
 Wait until all six UGVs are visible.
 
-### Terminal 2 — Multi-UGV trajectory execution
+---
+
+## Terminal 2 — Start Multi-UGV Execution
+
+Open a second terminal:
 
 ```bash
 cd simulation
@@ -679,44 +1063,61 @@ MULTI-UGV MISSION END | complete=6/6 | failed=0/6
 
 ---
 
-## 18. Gazebo Simulation Speed
+# 22. Gazebo Simulation Speed
 
-The world SDF contains:
+The Gazebo world contains:
 
 ```xml
 <max_step_size>...</max_step_size>
 <real_time_factor>...</real_time_factor>
 ```
 
-`real_time_factor` specifies a target simulation acceleration.
+`real_time_factor` defines a **target** simulation acceleration.
 
-The actual achievable real-time factor depends on the available CPU/GPU resources and rendering cost.
+The actual achievable factor depends on:
 
-For performance measurements, Gazebo statistics can be inspected using:
+- CPU performance,
+- Gazebo physics computation,
+- rendering cost,
+- number of simulated models,
+- number of obstacles.
+
+The actual Gazebo real-time factor can be measured using:
 
 ```bash
 gz topic -l | grep stats
 ```
 
-and then:
+and:
 
 ```bash
-gz topic -e -t /world/paper_corridors_6ugv/stats
+gz topic -e \
+  -t /world/paper_corridors_6ugv/stats
 ```
 
-For high-throughput experiments, Gazebo may also be executed in server-only/headless mode to remove GUI rendering overhead.
+For high-throughput experiments, Gazebo can also be executed without the graphical client:
+
+```bash
+gz sim -r -s <world.sdf>
+```
+
+This preserves the simulation server and physics while removing GUI rendering overhead.
 
 ---
 
 # Part III — Experiments and Reproducibility
 
-## 19. Running the Main Experiments
+# 23. Main CL-CBS vs LCBR Comparison
 
-From `algorithm/`:
+From:
 
 ```bash
-cd experiments/main_comparison
+cd algorithm/experiments/main_comparison
+```
 
+run:
+
+```bash
 python3 select_instances.py \
   --config ../../config/experiments/main_comparison_50x50.yaml \
   --tag 50
@@ -726,11 +1127,21 @@ python3 run_comparison.py \
   --tag 50
 ```
 
-Repeat with the corresponding 100×100 and 300×300 configurations.
+The corresponding configurations are available for:
+
+```text
+50 x 50
+100 x 100
+300 x 300
+```
+
+instances.
 
 ---
 
-## 20. Repair-Window Ablation
+# 24. Repair-Window Ablation
+
+For the LCBR repair-window analysis:
 
 ```bash
 cd algorithm/experiments/delta_w_ablation
@@ -749,7 +1160,9 @@ python3 run_ablation.py \
 
 ---
 
-## 21. Solution Validation
+# 25. Solution Validation
+
+The generated solutions can be independently validated using:
 
 ```bash
 cd algorithm/analysis
@@ -758,11 +1171,15 @@ python3 validate_all_runs.py \
   --vehicle-config ../config/vehicle_config.yaml
 ```
 
-The validation framework checks the generated solutions independently for the relevant kinematic, obstacle/boundary and inter-robot collision conditions.
+The validation framework checks the relevant:
+
+- kinematic conditions,
+- obstacle/boundary conditions,
+- inter-robot collision conditions.
 
 ---
 
-## 22. Benchmark Dataset
+# 26. Benchmark Dataset
 
 The original Wen et al. benchmark is **not stored in this repository**.
 
@@ -778,7 +1195,7 @@ This avoids committing thousands of benchmark files that are publicly available 
 
 ---
 
-## 23. Generated Results
+# 27. Generated Experiment Results
 
 Generated experiment outputs are stored locally under:
 
@@ -794,7 +1211,7 @@ The repository keeps only:
 algorithm/runs/.gitkeep
 ```
 
-Generated ROS 2 artifacts are similarly excluded:
+The generated ROS 2 artifacts are similarly excluded:
 
 ```text
 simulation/build/
@@ -802,11 +1219,11 @@ simulation/install/
 simulation/log/
 ```
 
-The simulation package itself, reference scenario and reference trajectories remain versioned to support reproducibility.
+The simulation source package, reference scenario and reference trajectories remain versioned to support reproducibility.
 
 ---
 
-## 24. Documentation
+# 28. Documentation
 
 Algorithm-specific documentation is available under:
 
@@ -814,43 +1231,110 @@ Algorithm-specific documentation is available under:
 algorithm/docs/
 ```
 
-including:
+Main documents:
 
-- `LCBR.md` — algorithm-to-code mapping and LCBR details,
-- `EXPERIMENTS.md` — experiment execution,
-- `REPRODUCIBILITY.md` — environment, known limitations and reproducibility notes.
+- [`LCBR.md`](algorithm/docs/LCBR.md) — algorithm-to-code mapping and LCBR details,
+- [`EXPERIMENTS.md`](algorithm/docs/EXPERIMENTS.md) — experiment execution,
+- [`REPRODUCIBILITY.md`](algorithm/docs/REPRODUCIBILITY.md) — environment, limitations and reproducibility notes.
 
 ---
 
-## 25. Citation
+# 29. Reproducibility Workflow
 
-See:
+A complete reproduction of the planning-to-simulation pipeline follows:
 
 ```text
-CITATION.cff
+1. Obtain / generate scenario
+          │
+          ▼
+2. Run SHA* + task allocation
+          │
+          ▼
+3. Generate nominal.yaml
+          │
+          ▼
+4. Run LCBR
+          │
+          ▼
+5. Generate final_lcbr.yaml
+          │
+          ▼
+6. Copy final_lcbr.yaml to simulation package
+          │
+          ▼
+7. Run dense_reference.py
+          │
+          ▼
+8. Verify primitive endpoint audit
+          │
+          ▼
+9. Generate Gazebo world
+          │
+          ▼
+10. Build ROS 2 package
+          │
+          ▼
+11. Launch Gazebo
+          │
+          ▼
+12. Launch multi_ugv_tracker
+          │
+          ▼
+13. Verify all six UGVs complete
 ```
 
-If using the underlying CL-CBS / CL-MAPF machinery, please also cite the original work by Wen et al. (2022).
-
-Original CL-CBS repository:
-
-https://github.com/APRIL-ZJU/CL-CBS
-
----
-
-## 26. License
-
-See:
+Expected final execution status:
 
 ```text
-LICENSE
+MULTI-UGV MISSION END | complete=6/6 | failed=0/6
 ```
-
-for licensing information.
 
 ---
 
-## Project Status
+# 30. Interpretation of the Gazebo Validation
+
+The Gazebo simulation should be interpreted as an **execution-level validation** of trajectories generated by the planning framework.
+
+The planning layer determines:
+
+```text
+where each UGV should move
++
+which forward/reverse/WAIT primitives should be executed
++
+the temporal coordination between robots
+```
+
+The execution layer determines:
+
+```text
+how a physical Ackermann vehicle follows that reference
+```
+
+Therefore:
+
+```text
+Planning / Coordination
+          │
+          │ final_lcbr.yaml
+          ▼
+Physical Execution
+```
+
+are deliberately separated.
+
+This distinction is important when interpreting:
+
+- planning feasibility,
+- collision-free coordination,
+- physical tracking errors,
+- execution timing,
+- controller behavior,
+- simulation-level deviations.
+
+---
+
+# 31. Project Status
 
 Current development includes:
 
@@ -858,13 +1342,46 @@ Current development includes:
 - trajectory-cost-based task allocation,
 - CL-CBS baseline,
 - Local Conflict-Based Trajectory Repair,
-- experiment logging and validation,
-- 50×50 / 100×100 / 300×300 experiment infrastructure,
+- experiment logging,
+- solution validation,
+- 50×50 experiment infrastructure,
+- 100×100 experiment infrastructure,
+- 300×300 experiment infrastructure,
 - six-UGV ROS 2 / Gazebo execution,
-- forward/reverse motion execution,
+- exact SHA* primitive reconstruction,
+- forward motion execution,
+- reverse motion execution,
 - explicit WAIT handling,
-- synchronized temporal-frontier execution,
+- WAIT release,
+- temporal-frontier synchronization,
 - closed-loop Pure Pursuit tracking,
-- Ackermann vehicle models.
+- Ackermann vehicle models,
+- accelerated Gazebo execution.
 
 The repository is currently maintained as a research codebase associated with ongoing work.
+
+---
+
+# 32. Citation
+
+See:
+
+[`CITATION.cff`](CITATION.cff)
+
+If using the underlying CL-CBS / CL-MAPF machinery, please also cite the original work:
+
+> Wen et al., *CL-MAPF: Multi-Agent Path Finding for Car-Like Robots with Kinematic and Spatiotemporal Constraints*, Robotics and Autonomous Systems, 2022.
+
+Original CL-CBS repository:
+
+https://github.com/APRIL-ZJU/CL-CBS
+
+---
+
+# 33. License
+
+See:
+
+[`LICENSE`](LICENSE)
+
+for licensing information.
