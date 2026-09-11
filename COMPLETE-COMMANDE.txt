@@ -1,0 +1,825 @@
+================================================================================
+LCBR MULTI-UGV — COMPLETE EXECUTION COMMANDS
+Algorithm + Full Pipeline + CL-CBS/LCBR Comparison + GIF + ROS 2/Gazebo
+================================================================================
+
+
+================================================================================
+0. REPOSITORY STRUCTURE
+================================================================================
+
+UGV-Coordination/
+|
+|-- algorithm/
+|   |-- build/
+|   |-- config/
+|   |-- experiments/
+|   |-- analysis/
+|   |-- tools/
+|   |-- runs/
+|   |-- include/
+|   `-- src/
+|
+`-- simulation/
+    |-- src/
+    |   `-- ugv_gazebo/
+    |       |-- launch/
+    |       |-- models/
+    |       |-- scenarios/
+    |       |-- trajectories/
+    |       |-- tools/
+    |       |-- ugv_gazebo/
+    |       `-- worlds/
+    |
+    |-- build/       [generated - ignored by Git]
+    |-- install/     [generated - ignored by Git]
+    `-- log/         [generated - ignored by Git]
+
+
+================================================================================
+1. BUILD THE ALGORITHM
+================================================================================
+
+From the repository root:
+
+cd UGV-Coordination/algorithm
+
+mkdir -p build
+cd build
+
+cmake -DCMAKE_BUILD_TYPE=Release ..
+
+make -j$(nproc)
+
+ctest --output-on-failure
+
+cd ..
+
+The executable should be:
+
+algorithm/build/ugv_coordination
+
+
+================================================================================
+2. CHECK THE EXECUTABLE
+================================================================================
+
+./build/ugv_coordination --help
+
+
+================================================================================
+3. FULL PIPELINE — CORRIDORS 6 UGV
+================================================================================
+
+Go to:
+
+cd UGV-Coordination/algorithm
+
+Create the output directory:
+
+mkdir -p runs/full_pipeline/corridors_6ugv
+
+
+Run the complete pipeline:
+
+./build/ugv_coordination \
+  --input experiments/full_pipeline/instances/paper_corridors_6ugv.yaml \
+  --output runs/full_pipeline/corridors_6ugv/final_lcbr.yaml \
+  --nominal-output runs/full_pipeline/corridors_6ugv/nominal.yaml \
+  --mode lcbr \
+  --delta_w_steps 10 \
+  --timeout 600 \
+  --vehicle-config config/vehicle_config.yaml
+
+
+Pipeline:
+
+Scenario
+   |
+   v
+SHA* nominal trajectory generation
+   |
+   v
+M x Q SHA* trajectory-cost matrix
+   |
+   v
+Hungarian task allocation
+   |
+   v
+nominal.yaml
+   |
+   v
+Conflict detection
+   |
+   v
+LCBR
+   |
+   v
+final_lcbr.yaml
+
+
+Generated files:
+
+runs/full_pipeline/corridors_6ugv/nominal.yaml
+
+runs/full_pipeline/corridors_6ugv/final_lcbr.yaml
+
+
+================================================================================
+4. GENERATE GIF — BEFORE LCBR
+================================================================================
+
+From:
+
+cd UGV-Coordination/algorithm
+
+
+python3 tools/visualize_v2.py \
+  -m experiments/full_pipeline/instances/paper_corridors_6ugv.yaml \
+  -s runs/full_pipeline/corridors_6ugv/nominal.yaml \
+  -v runs/full_pipeline/corridors_6ugv/corridors_6ugv_BEFORE.gif \
+  --speed 4
+
+
+Output:
+
+runs/full_pipeline/corridors_6ugv/corridors_6ugv_BEFORE.gif
+
+
+================================================================================
+5. GENERATE GIF — AFTER LCBR
+================================================================================
+
+python3 tools/visualize_v2.py \
+  -m experiments/full_pipeline/instances/paper_corridors_6ugv.yaml \
+  -s runs/full_pipeline/corridors_6ugv/final_lcbr.yaml \
+  -v runs/full_pipeline/corridors_6ugv/corridors_6ugv_AFTER.gif \
+  --speed 4
+
+
+Output:
+
+runs/full_pipeline/corridors_6ugv/corridors_6ugv_AFTER.gif
+
+
+NOTE:
+
+--speed 4 changes only the GIF playback speed.
+
+It does NOT modify:
+
+- the trajectory,
+- the planner time,
+- the robot velocity,
+- the LCBR solution.
+
+
+================================================================================
+6. RUN THE OTHER FULL-PIPELINE 6-UGV EXAMPLES
+================================================================================
+
+Available examples include:
+
+experiments/full_pipeline/instances/instance1_grouped_scattered.yaml
+
+experiments/full_pipeline/instances/instance2_grouped_wall.yaml
+
+experiments/full_pipeline/instances/instance3_grouped_croprows.yaml
+
+
+From:
+
+cd UGV-Coordination/algorithm
+
+
+Run:
+
+python3 experiments/full_pipeline/run_examples.py
+
+
+================================================================================
+7. CL-CBS vs LCBR — 50 x 50 COMPARISON
+================================================================================
+
+Go to:
+
+cd UGV-Coordination/algorithm/experiments/main_comparison
+
+
+Select the instances:
+
+python3 select_instances.py \
+  --config ../../config/experiments/main_comparison_50x50.yaml \
+  --tag 50
+
+
+Run CL-CBS vs LCBR:
+
+python3 run_comparison.py \
+  --config ../../config/experiments/main_comparison_50x50.yaml \
+  --tag 50
+
+
+================================================================================
+8. CL-CBS vs LCBR — 100 x 100 COMPARISON
+================================================================================
+
+cd UGV-Coordination/algorithm/experiments/main_comparison
+
+
+python3 select_instances.py \
+  --config ../../config/experiments/main_comparison_100x100.yaml \
+  --tag 100
+
+
+python3 run_comparison.py \
+  --config ../../config/experiments/main_comparison_100x100.yaml \
+  --tag 100
+
+
+================================================================================
+9. CL-CBS vs LCBR — 300 x 300 COMPARISON
+================================================================================
+
+cd UGV-Coordination/algorithm/experiments/main_comparison
+
+
+python3 select_instances.py \
+  --config ../../config/experiments/main_comparison_300x300.yaml \
+  --tag 300
+
+
+python3 run_comparison.py \
+  --config ../../config/experiments/main_comparison_300x300.yaml \
+  --tag 300
+
+
+================================================================================
+10. COMPARISON PRINCIPLE
+================================================================================
+
+For the same selected instance:
+
+                         SAME INSTANCE
+                              |
+                  +-----------+-----------+
+                  |                       |
+                  v                       v
+               CL-CBS                    LCBR
+                  |                       |
+        full-horizon replanning     bounded local repair
+                                          |
+                                          v
+                                  full-horizon fallback
+                                  when required
+
+
+The objective is to compare the conflict-resolution mechanisms while keeping
+the common planning machinery consistent.
+
+
+================================================================================
+11. LCBR DELTA_W ABLATION
+================================================================================
+
+Go to:
+
+cd UGV-Coordination/algorithm/experiments/delta_w_ablation
+
+
+Example for 100 x 100:
+
+python3 select_conflict_instances.py \
+  --map-size 100by100 \
+  --scenario obstacle \
+  --top-n 15 \
+  --tag 100conf
+
+
+Then:
+
+python3 run_ablation.py \
+  --config ../../config/experiments/delta_w_ablation_100x100.yaml \
+  --tag 100conf \
+  --parallel 3
+
+
+================================================================================
+12. VALIDATE THE GENERATED SOLUTIONS
+================================================================================
+
+Go to:
+
+cd UGV-Coordination/algorithm/analysis
+
+
+Run:
+
+python3 validate_all_runs.py \
+  --vehicle-config ../config/vehicle_config.yaml
+
+
+This performs independent validation of the generated solutions for the
+implemented validation criteria, including:
+
+- kinematic validity,
+- obstacle / workspace validity,
+- inter-UGV collision validity.
+
+
+================================================================================
+13. ALGORITHM -> GAZEBO
+================================================================================
+
+The planner output used by Gazebo is:
+
+algorithm/runs/full_pipeline/corridors_6ugv/final_lcbr.yaml
+
+
+From the ROOT of UGV-Coordination:
+
+cp \
+  algorithm/runs/full_pipeline/corridors_6ugv/final_lcbr.yaml \
+  simulation/src/ugv_gazebo/trajectories/final_lcbr.yaml
+
+
+The interface is therefore:
+
+algorithm
+   |
+   v
+final_lcbr.yaml
+   |
+   v
+simulation
+
+
+================================================================================
+14. GENERATE DENSE SHA* REFERENCES
+================================================================================
+
+Go to:
+
+cd UGV-Coordination/simulation/src/ugv_gazebo
+
+
+Run:
+
+python3 ugv_gazebo/dense_reference.py
+
+
+This reconstructs the original SHA* primitives as dense references.
+
+Generated files:
+
+trajectories/dense/agent0_dense.yaml
+trajectories/dense/agent1_dense.yaml
+trajectories/dense/agent2_dense.yaml
+trajectories/dense/agent3_dense.yaml
+trajectories/dense/agent4_dense.yaml
+trajectories/dense/agent5_dense.yaml
+
+
+The reconstruction preserves:
+
+- straight primitives,
+- circular turning primitives,
+- forward direction,
+- reverse direction,
+- WAIT actions,
+- planner timestamps.
+
+
+The script also performs the primitive endpoint audit.
+
+
+================================================================================
+15. GENERATE THE GAZEBO WORLD
+================================================================================
+
+Still inside:
+
+UGV-Coordination/simulation/src/ugv_gazebo
+
+
+Run:
+
+python3 tools/generate_corridors_world.py
+
+
+Input:
+
+scenarios/paper_corridors_6ugv.yaml
+
+
+Output:
+
+worlds/paper_corridors_6ugv.sdf
+
+
+Current corridor scenario:
+
+Workspace : 55 x 55 m
+Obstacles : 92
+Starts    : 6
+Goals     : 6
+
+
+UGV mapping:
+
+agent0 -> ugv_1 -> start (12, 4)
+agent1 -> ugv_2 -> start (18, 4)
+agent2 -> ugv_3 -> start (24, 4)
+agent3 -> ugv_4 -> start (30, 4)
+agent4 -> ugv_5 -> start (36, 4)
+agent5 -> ugv_6 -> start (42, 4)
+
+
+================================================================================
+16. BUILD THE ROS 2 / GAZEBO WORKSPACE
+================================================================================
+
+Go to:
+
+cd UGV-Coordination/simulation
+
+
+Load ROS 2 Jazzy:
+
+source /opt/ros/jazzy/setup.bash
+
+
+Build:
+
+colcon build \
+  --packages-select ugv_gazebo \
+  --symlink-install
+
+
+Load the workspace:
+
+source install/setup.bash
+
+
+Check the multi-UGV executable:
+
+ros2 pkg executables ugv_gazebo | grep multi
+
+
+Expected:
+
+ugv_gazebo multi_ugv_tracker
+
+
+================================================================================
+17. TERMINAL 1 — LAUNCH GAZEBO
+================================================================================
+
+Open Terminal 1.
+
+
+cd UGV-Coordination/simulation
+
+source /opt/ros/jazzy/setup.bash
+source install/setup.bash
+
+ros2 launch ugv_gazebo simulation.launch.py
+
+
+Wait until:
+
+- Gazebo is open,
+- the corridor environment is visible,
+- all 6 UGVs are present.
+
+
+================================================================================
+18. OPTIONAL — CHECK ROS TOPICS
+================================================================================
+
+In another terminal:
+
+cd UGV-Coordination/simulation
+
+source /opt/ros/jazzy/setup.bash
+source install/setup.bash
+
+
+Check command and odometry topics:
+
+ros2 topic list | grep -E 'cmd_vel|odometry' | sort
+
+
+Expected:
+
+/model/ugv_1/odometry
+/model/ugv_2/odometry
+/model/ugv_3/odometry
+/model/ugv_4/odometry
+/model/ugv_5/odometry
+/model/ugv_6/odometry
+
+/ugv_1/cmd_vel
+/ugv_2/cmd_vel
+/ugv_3/cmd_vel
+/ugv_4/cmd_vel
+/ugv_5/cmd_vel
+/ugv_6/cmd_vel
+
+
+================================================================================
+19. TERMINAL 2 — START THE MULTI-UGV TRACKER
+================================================================================
+
+Open Terminal 2.
+
+
+cd UGV-Coordination/simulation
+
+source /opt/ros/jazzy/setup.bash
+source install/setup.bash
+
+ros2 run ugv_gazebo multi_ugv_tracker
+
+
+The tracker manages:
+
+6 dense references
+6 odometry streams
+6 cmd_vel publishers
+6 Pure Pursuit controllers
+1 common temporal coordination mechanism
+
+
+Typical logs:
+
+DIRECTION SWITCH
+
+LCBR WAIT
+
+WAIT RELEASE
+
+TIME FRONTIER HOLD
+
+COMPLETE
+
+
+================================================================================
+20. EXPECTED FINAL GAZEBO RESULT
+================================================================================
+
+A successful execution should terminate with:
+
+MULTI-UGV MISSION END | complete=6/6 | failed=0/6
+
+
+The six UGVs should:
+
+- follow their assigned trajectories,
+- execute forward primitives,
+- execute reverse primitives,
+- respect LCBR WAIT actions,
+- preserve temporal coordination,
+- avoid static obstacles,
+- avoid inter-UGV collisions,
+- reach their assigned goals.
+
+
+================================================================================
+21. CHECK GAZEBO REAL-TIME FACTOR
+================================================================================
+
+While Gazebo is running:
+
+gz topic -l | grep stats
+
+
+Then use the world stats topic, for example:
+
+gz topic -e \
+  -t /world/paper_corridors_6ugv/stats
+
+
+Look for:
+
+sim_time
+real_time
+real_time_factor
+step_size
+
+
+IMPORTANT:
+
+<real_time_factor> in the SDF is a TARGET.
+
+The actual achievable real-time factor depends on:
+
+- CPU,
+- Gazebo physics,
+- GUI rendering,
+- number of obstacles,
+- number of UGV models.
+
+
+================================================================================
+22. FAST GAZEBO — HEADLESS TEST
+================================================================================
+
+If only fast execution is required and visualization is not required:
+
+cd UGV-Coordination/simulation
+
+source /opt/ros/jazzy/setup.bash
+source install/setup.bash
+
+
+Run Gazebo server only:
+
+gz sim -r -s \
+  install/ugv_gazebo/share/ugv_gazebo/worlds/paper_corridors_6ugv.sdf
+
+
+NOTE:
+
+-s = server only / no Gazebo GUI.
+
+This can substantially increase the achievable real-time factor because
+the 3D scene is no longer rendered.
+
+
+================================================================================
+23. IMPORTANT GENERATED DIRECTORIES
+================================================================================
+
+Do NOT commit:
+
+algorithm/build/
+
+algorithm/benchmark/
+
+algorithm/runs/*
+
+simulation/build/
+
+simulation/install/
+
+simulation/log/
+
+.venv/
+
+__pycache__/
+
+
+The reference Gazebo trajectories under:
+
+simulation/src/ugv_gazebo/trajectories/
+
+may remain versioned for reproducibility.
+
+
+================================================================================
+24. COMPLETE PIPELINE SUMMARY
+================================================================================
+
+                         PLANNING
+                            |
+                            v
+                        Scenario
+                            |
+                            v
+                          SHA*
+                            |
+                            v
+                M x Q trajectory costs
+                            |
+                            v
+                 Hungarian assignment
+                            |
+                            v
+                     nominal.yaml
+                            |
+                            v
+                 Conflict detection
+                            |
+                            v
+                          LCBR
+                            |
+                            v
+                    final_lcbr.yaml
+                            |
+============================|==========================================
+                            |
+                     GAZEBO INTERFACE
+                            |
+                            v
+               Copy final_lcbr.yaml
+                            |
+                            v
+                  dense_reference.py
+                            |
+                            v
+               Dense SHA* primitives
+                            |
+                            v
+             Multi-UGV temporal scheduler
+                            |
+                            v
+                    Pure Pursuit
+                            |
+                            v
+                    (v, omega)
+                            |
+                            v
+              Ackermann Gazebo models
+                            |
+                            v
+                     Gazebo physics
+                            |
+                            v
+                       Odometry
+                            |
+                            +------> feedback
+                            |
+                            v
+                  6 UGVs reach goals
+
+
+EXPECTED FINAL STATUS:
+
+MULTI-UGV MISSION END | complete=6/6 | failed=0/6
+
+
+================================================================================
+25. ULTRA-SHORT COMMAND SEQUENCE — FULL PIPELINE TO GAZEBO
+================================================================================
+
+# ---------------- ALGORITHM ----------------
+
+cd UGV-Coordination/algorithm
+
+mkdir -p runs/full_pipeline/corridors_6ugv
+
+./build/ugv_coordination \
+  --input experiments/full_pipeline/instances/paper_corridors_6ugv.yaml \
+  --output runs/full_pipeline/corridors_6ugv/final_lcbr.yaml \
+  --nominal-output runs/full_pipeline/corridors_6ugv/nominal.yaml \
+  --mode lcbr \
+  --delta_w_steps 10 \
+  --timeout 600 \
+  --vehicle-config config/vehicle_config.yaml
+
+
+# ---------------- COPY TO GAZEBO ----------------
+
+cd ..
+
+cp \
+  algorithm/runs/full_pipeline/corridors_6ugv/final_lcbr.yaml \
+  simulation/src/ugv_gazebo/trajectories/final_lcbr.yaml
+
+
+# ---------------- DENSE + WORLD ----------------
+
+cd simulation/src/ugv_gazebo
+
+python3 ugv_gazebo/dense_reference.py
+
+python3 tools/generate_corridors_world.py
+
+
+# ---------------- BUILD ROS 2 ----------------
+
+cd ../..
+
+source /opt/ros/jazzy/setup.bash
+
+colcon build \
+  --packages-select ugv_gazebo \
+  --symlink-install
+
+source install/setup.bash
+
+
+# ---------------- TERMINAL 1 ----------------
+
+ros2 launch ugv_gazebo simulation.launch.py
+
+
+# ---------------- TERMINAL 2 ----------------
+
+cd UGV-Coordination/simulation
+
+source /opt/ros/jazzy/setup.bash
+source install/setup.bash
+
+ros2 run ugv_gazebo multi_ugv_tracker
+
+
+# ---------------- EXPECTED RESULT ----------------
+
+MULTI-UGV MISSION END | complete=6/6 | failed=0/6
+
+
+================================================================================
+END
+================================================================================
