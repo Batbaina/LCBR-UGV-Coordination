@@ -1,0 +1,1658 @@
+statistics:
+  cost: 557.131
+  makespan: 82.7214
+  flowtime: 443.681
+  runtime: 272.141
+schedule:
+  agent0:
+    - x: 12
+      y: 4
+      yaw: 1.5708
+      t: 0
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 11.2812
+      y: 2.05166
+      yaw: 2.27766
+      t: 1
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 9.46929
+      y: 1.03694
+      yaw: 2.98452
+      t: 2
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 7.4325
+      y: 1.4421
+      yaw: 3.69138
+      t: 3
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 5.62441
+      y: 2.5501
+      yaw: 3.69138
+      t: 4
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 3.81633
+      y: 3.6581
+      yaw: 3.69138
+      t: 5
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 2.00825
+      y: 4.76611
+      yaw: 3.69138
+      t: 6
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 0.722577
+      y: 6.39698
+      yaw: 4.39823
+      t: 7
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 0.0672909
+      y: 8.41377
+      yaw: 4.39823
+      t: 8
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 0.14883
+      y: 10.4889
+      yaw: 5.10509
+      t: 9
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 0.960345
+      y: 12.448
+      yaw: 5.10509
+      t: 10
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 1.77186
+      y: 14.4072
+      yaw: 5.10509
+      t: 11
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 1.8534
+      y: 16.4823
+      yaw: 4.39823
+      t: 12
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 1.19811
+      y: 18.4991
+      yaw: 4.39823
+      t: 13
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 0.542827
+      y: 20.5159
+      yaw: 4.39823
+      t: 14
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 0.624366
+      y: 22.591
+      yaw: 5.10509
+      t: 15
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 1.43588
+      y: 24.5501
+      yaw: 5.10509
+      t: 16
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 1.51742
+      y: 26.6252
+      yaw: 4.39823
+      t: 17
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 0.862133
+      y: 28.642
+      yaw: 4.39823
+      t: 18
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 0.206847
+      y: 30.6588
+      yaw: 4.39823
+      t: 19
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 0.288386
+      y: 32.7339
+      yaw: 5.10509
+      t: 20
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 1.69806
+      y: 34.2589
+      yaw: 5.81195
+      t: 21
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 3.10773
+      y: 35.7838
+      yaw: 5.10509
+      t: 22
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 3.18927
+      y: 37.8589
+      yaw: 4.39823
+      t: 23
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 1.9036
+      y: 39.4898
+      yaw: 3.69138
+      t: 24
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 0.617933
+      y: 41.1207
+      yaw: 4.39823
+      t: 25
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 0.699471
+      y: 43.1958
+      yaw: 5.10509
+      t: 26
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 2.10914
+      y: 44.7207
+      yaw: 5.81195
+      t: 27
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 1.35541
+    - x: 3.1395
+      y: 45.5836
+      yaw: 5.36015
+      t: 28
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 4.41905
+      y: 47.2746
+      yaw: 5.36015
+      t: 29
+      action: 0
+      motion: forward_straight
+      transition_cost: 0.94172
+    - x: 4.98729
+      y: 48.0256
+      yaw: 5.36015
+      t: 30
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 6.7361
+      y: 49.1455
+      yaw: 6.067
+      t: 31
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 8.79327
+      y: 48.8614
+      yaw: 0.490678
+      t: 32
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 0.471239
+    - x: 9.1898
+      y: 48.6077
+      yaw: 0.647757
+      t: 33
+      action: 5
+      motion: reverse_turn_pos
+      transition_cost: 3.18086
+    - x: 8.06983
+      y: 50.3565
+      yaw: 1.35462
+      t: 34
+      action: 5
+      motion: reverse_turn_pos
+      transition_cost: 0.648553
+    - x: 8
+      y: 51
+      yaw: 1.5708
+      t: 35
+      action: -1
+      motion: goal
+  agent1:
+    - x: 18
+      y: 4
+      yaw: 1.5708
+      t: 0
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 18.7188
+      y: 2.05165
+      yaw: 0.863942
+      t: 1
+      action: 6
+      motion: wait
+      transition_cost: 2.12057
+    - x: 18.7188
+      y: 2.05165
+      yaw: 0.863942
+      t: 2
+      action: 6
+      motion: wait
+      transition_cost: 2.12057
+    - x: 18.7188
+      y: 2.05165
+      yaw: 0.863942
+      t: 3
+      action: 6
+      motion: wait
+      transition_cost: 2.12057
+    - x: 18.7188
+      y: 2.05165
+      yaw: 0.863942
+      t: 4
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 20.5307
+      y: 1.03693
+      yaw: 0.157083
+      t: 5
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 22.5675
+      y: 1.44206
+      yaw: 5.73341
+      t: 6
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 23.8532
+      y: 3.07293
+      yaw: 5.02655
+      t: 7
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 24.5085
+      y: 5.08971
+      yaw: 5.02655
+      t: 8
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 25.1638
+      y: 7.1065
+      yaw: 5.02655
+      t: 9
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 25.0822
+      y: 9.1816
+      yaw: 4.31969
+      t: 10
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 24.2707
+      y: 11.1408
+      yaw: 4.31969
+      t: 11
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 0.51306
+    - x: 24.1158
+      y: 11.6292
+      yaw: 4.49071
+      t: 12
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 23.6496
+      y: 13.6979
+      yaw: 4.49071
+      t: 13
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 23.1833
+      y: 15.7666
+      yaw: 4.49071
+      t: 14
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 22.7171
+      y: 17.8353
+      yaw: 4.49071
+      t: 15
+      action: 0
+      motion: forward_straight
+      transition_cost: 1.73055
+    - x: 22.3366
+      y: 19.5235
+      yaw: 4.49071
+      t: 16
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 0.28316
+    - x: 22.2875
+      y: 19.8022
+      yaw: 4.5851
+      t: 17
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 1.32436
+    - x: 22.41
+      y: 21.1101
+      yaw: 5.02655
+      t: 18
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 23.0653
+      y: 23.1269
+      yaw: 5.02655
+      t: 19
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 24.351
+      y: 24.7578
+      yaw: 5.73341
+      t: 20
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 26.3878
+      y: 25.1629
+      yaw: 0.157083
+      t: 21
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 28.4823
+      y: 24.8312
+      yaw: 0.157083
+      t: 22
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 30.5191
+      y: 25.2363
+      yaw: 5.73341
+      t: 23
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 32.3272
+      y: 26.3443
+      yaw: 5.73341
+      t: 24
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 33.6128
+      y: 27.9752
+      yaw: 5.02655
+      t: 25
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 34.2681
+      y: 29.9919
+      yaw: 5.02655
+      t: 26
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 34.9234
+      y: 32.0087
+      yaw: 5.02655
+      t: 27
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 34.8419
+      y: 34.0838
+      yaw: 4.31969
+      t: 28
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 34.0304
+      y: 36.043
+      yaw: 4.31969
+      t: 29
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 33.2189
+      y: 38.0021
+      yaw: 4.31969
+      t: 30
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 31.8093
+      y: 39.5271
+      yaw: 3.61284
+      t: 31
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 29.9198
+      y: 40.4899
+      yaw: 3.61284
+      t: 32
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 28.0304
+      y: 41.4526
+      yaw: 3.61284
+      t: 33
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 26.1409
+      y: 42.4153
+      yaw: 3.61284
+      t: 34
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 24.0786
+      y: 42.6594
+      yaw: 2.90598
+      t: 35
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 0.359497
+    - x: 23.7349
+      y: 42.5548
+      yaw: 2.78614
+      t: 36
+      action: 4
+      motion: reverse_turn_neg
+      transition_cost: 3.18086
+    - x: 25.3113
+      y: 43.9067
+      yaw: 2.07929
+      t: 37
+      action: 4
+      motion: reverse_turn_neg
+      transition_cost: 3.18086
+    - x: 25.6321
+      y: 45.9584
+      yaw: 1.37243
+      t: 38
+      action: 4
+      motion: reverse_turn_neg
+      transition_cost: 0.471239
+    - x: 25.5034
+      y: 46.4113
+      yaw: 1.21535
+      t: 39
+      action: 3
+      motion: reverse_straight
+      transition_cost: 2.12057
+    - x: 24.7654
+      y: 48.3993
+      yaw: 1.21535
+      t: 40
+      action: 3
+      motion: reverse_straight
+      transition_cost: 1.66047
+    - x: 24.1875
+      y: 49.956
+      yaw: 1.21535
+      t: 41
+      action: 5
+      motion: reverse_turn_pos
+      transition_cost: 1.06635
+    - x: 24
+      y: 51
+      yaw: 1.5708
+      t: 42
+      action: -1
+      motion: goal
+  agent2:
+    - x: 24
+      y: 4
+      yaw: 1.5708
+      t: 0
+      action: 3
+      motion: reverse_straight
+      transition_cost: 8.4823
+    - x: 24
+      y: 6.12057
+      yaw: 1.5708
+      t: 1
+      action: 3
+      motion: reverse_straight
+      transition_cost: 4.24115
+    - x: 24
+      y: 8.24115
+      yaw: 1.5708
+      t: 2
+      action: 5
+      motion: reverse_turn_pos
+      transition_cost: 6.36172
+    - x: 24.7188
+      y: 10.1895
+      yaw: 2.27766
+      t: 3
+      action: 5
+      motion: reverse_turn_pos
+      transition_cost: 6.36172
+    - x: 26.5307
+      y: 11.2042
+      yaw: 2.98452
+      t: 4
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 6.36172
+    - x: 24.4939
+      y: 11.6094
+      yaw: 3.69138
+      t: 5
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 23.2083
+      y: 13.2402
+      yaw: 4.39823
+      t: 6
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 22.553
+      y: 15.257
+      yaw: 4.39823
+      t: 7
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 21.8977
+      y: 17.2738
+      yaw: 4.39823
+      t: 8
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 21.2424
+      y: 19.2906
+      yaw: 4.39823
+      t: 9
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 21.3239
+      y: 21.3657
+      yaw: 5.10509
+      t: 10
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 22.1355
+      y: 23.3249
+      yaw: 5.10509
+      t: 11
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 23.5451
+      y: 24.8498
+      yaw: 5.81195
+      t: 12
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 25.6074
+      y: 25.0939
+      yaw: 0.235623
+      t: 13
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 27.6694
+      y: 24.5989
+      yaw: 0.235623
+      t: 14
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 29.7317
+      y: 24.8429
+      yaw: 5.81195
+      t: 15
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 31.6212
+      y: 25.8057
+      yaw: 5.81195
+      t: 16
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 33.0308
+      y: 27.3306
+      yaw: 5.10509
+      t: 17
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 33.8424
+      y: 29.2898
+      yaw: 5.10509
+      t: 18
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 34.6539
+      y: 31.2489
+      yaw: 5.10509
+      t: 19
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 35.4654
+      y: 33.2081
+      yaw: 5.10509
+      t: 20
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 35.5469
+      y: 35.2832
+      yaw: 4.39823
+      t: 21
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 34.8916
+      y: 37.3
+      yaw: 4.39823
+      t: 22
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 33.606
+      y: 38.9308
+      yaw: 3.69138
+      t: 23
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 31.7979
+      y: 40.0388
+      yaw: 3.69138
+      t: 24
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 30.5122
+      y: 41.6697
+      yaw: 4.39823
+      t: 25
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 29.2266
+      y: 43.3006
+      yaw: 3.69138
+      t: 26
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 1.28728
+    - x: 28.0202
+      y: 43.7209
+      yaw: 3.26228
+      t: 27
+      action: 4
+      motion: reverse_turn_neg
+      transition_cost: 3.18086
+    - x: 30.041
+      y: 44.1998
+      yaw: 2.55542
+      t: 28
+      action: 4
+      motion: reverse_turn_neg
+      transition_cost: 3.18086
+    - x: 31.2664
+      y: 45.8764
+      yaw: 1.84857
+      t: 29
+      action: 4
+      motion: reverse_turn_neg
+      transition_cost: 0.471239
+    - x: 31.3596
+      y: 46.3378
+      yaw: 1.69149
+      t: 30
+      action: 3
+      motion: reverse_straight
+      transition_cost: 2.12057
+    - x: 31.6149
+      y: 48.443
+      yaw: 1.69149
+      t: 31
+      action: 3
+      motion: reverse_straight
+      transition_cost: 0.580539
+    - x: 31.6848
+      y: 49.0193
+      yaw: 1.69149
+      t: 32
+      action: 5
+      motion: reverse_turn_pos
+      transition_cost: 0.199762
+    - x: 31.7154
+      y: 49.2167
+      yaw: 1.75807
+      t: 33
+      action: 3
+      motion: reverse_straight
+      transition_cost: 1.24658
+    - x: 31.9475
+      y: 50.4415
+      yaw: 1.75807
+      t: 34
+      action: 4
+      motion: reverse_turn_neg
+      transition_cost: 0.56182
+    - x: 32
+      y: 51
+      yaw: 1.5708
+      t: 35
+      action: -1
+      motion: goal
+  agent3:
+    - x: 30
+      y: 4
+      yaw: 1.5708
+      t: 0
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 29.2812
+      y: 2.05166
+      yaw: 2.27766
+      t: 1
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 27.4693
+      y: 1.03694
+      yaw: 2.98452
+      t: 2
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 25.4325
+      y: 1.4421
+      yaw: 3.69138
+      t: 3
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 24.1468
+      y: 3.07297
+      yaw: 4.39823
+      t: 4
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 23.4915
+      y: 5.08976
+      yaw: 4.39823
+      t: 5
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 22.8363
+      y: 7.10655
+      yaw: 4.39823
+      t: 6
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 22.9178
+      y: 9.18165
+      yaw: 5.10509
+      t: 7
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 23.7293
+      y: 11.1408
+      yaw: 5.10509
+      t: 8
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 23.8108
+      y: 13.2159
+      yaw: 4.39823
+      t: 9
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 23.1556
+      y: 15.2327
+      yaw: 4.39823
+      t: 10
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 22.5003
+      y: 17.2495
+      yaw: 4.39823
+      t: 11
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 21.845
+      y: 19.2663
+      yaw: 4.39823
+      t: 12
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 21.9265
+      y: 21.3414
+      yaw: 5.10509
+      t: 13
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 22.738
+      y: 23.3005
+      yaw: 5.10509
+      t: 14
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 24.1477
+      y: 24.8255
+      yaw: 5.81195
+      t: 15
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 26.21
+      y: 25.0696
+      yaw: 0.235623
+      t: 16
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 28.272
+      y: 24.5745
+      yaw: 0.235623
+      t: 17
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 30.3343
+      y: 24.8186
+      yaw: 5.81195
+      t: 18
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 31.744
+      y: 26.3436
+      yaw: 5.10509
+      t: 19
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 32.5555
+      y: 28.3027
+      yaw: 5.10509
+      t: 20
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 33.367
+      y: 30.2619
+      yaw: 5.10509
+      t: 21
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 34.1785
+      y: 32.221
+      yaw: 5.10509
+      t: 22
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 34.99
+      y: 34.1802
+      yaw: 5.10509
+      t: 23
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 35.0716
+      y: 36.2553
+      yaw: 4.39823
+      t: 24
+      action: 6
+      motion: wait
+      transition_cost: 2.12057
+    - x: 35.0716
+      y: 36.2553
+      yaw: 4.39823
+      t: 25
+      action: 6
+      motion: wait
+      transition_cost: 2.12057
+    - x: 35.0716
+      y: 36.2553
+      yaw: 4.39823
+      t: 26
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 33.7859
+      y: 37.8862
+      yaw: 3.69138
+      t: 27
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 31.9778
+      y: 38.9942
+      yaw: 3.69138
+      t: 28
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 30.1698
+      y: 40.1022
+      yaw: 3.69138
+      t: 29
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 28.3617
+      y: 41.2102
+      yaw: 3.69138
+      t: 30
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 26.5536
+      y: 42.3182
+      yaw: 3.69138
+      t: 31
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 24.7455
+      y: 43.4262
+      yaw: 3.69138
+      t: 32
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 1.18736
+    - x: 23.8805
+      y: 44.2283
+      yaw: 4.08716
+      t: 33
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 22.6394
+      y: 45.9477
+      yaw: 4.08716
+      t: 34
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 21.3983
+      y: 47.6671
+      yaw: 4.08716
+      t: 35
+      action: 0
+      motion: forward_straight
+      transition_cost: 1.29567
+    - x: 20.6399
+      y: 48.7177
+      yaw: 4.08716
+      t: 36
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 0.857903
+    - x: 20.0458
+      y: 49.3325
+      yaw: 3.80119
+      t: 37
+      action: 0
+      motion: forward_straight
+      transition_cost: 0.589708
+    - x: 19.5798
+      y: 49.6939
+      yaw: 3.80119
+      t: 38
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 17.5997
+      y: 50.3199
+      yaw: 3.09434
+      t: 39
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 15.6875
+      y: 49.5098
+      yaw: 2.38748
+      t: 40
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 0.471239
+    - x: 15.3707
+      y: 49.1616
+      yaw: 2.2304
+      t: 41
+      action: 4
+      motion: reverse_turn_neg
+      transition_cost: 1.97879
+    - x: 16
+      y: 51
+      yaw: 1.5708
+      t: 42
+      action: -1
+      motion: goal
+  agent4:
+    - x: 36
+      y: 4
+      yaw: 1.5708
+      t: 0
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 36.7188
+      y: 2.05165
+      yaw: 0.863942
+      t: 1
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 38.5307
+      y: 1.03693
+      yaw: 0.157083
+      t: 2
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 40.5675
+      y: 1.44206
+      yaw: 5.73341
+      t: 3
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 42.3756
+      y: 2.55005
+      yaw: 5.73341
+      t: 4
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 44.1837
+      y: 3.65804
+      yaw: 5.73341
+      t: 5
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 45.9918
+      y: 4.76603
+      yaw: 5.73341
+      t: 6
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 47.7999
+      y: 5.87402
+      yaw: 5.73341
+      t: 7
+      action: 6
+      motion: wait
+      transition_cost: 2.12057
+    - x: 47.7999
+      y: 5.87402
+      yaw: 5.73341
+      t: 8
+      action: 6
+      motion: wait
+      transition_cost: 2.12057
+    - x: 47.7999
+      y: 5.87402
+      yaw: 5.73341
+      t: 9
+      action: 6
+      motion: wait
+      transition_cost: 2.12057
+    - x: 47.7999
+      y: 5.87402
+      yaw: 5.73341
+      t: 10
+      action: 0
+      motion: forward_straight
+      transition_cost: 4.24115
+    - x: 49.6079
+      y: 6.98202
+      yaw: 5.73341
+      t: 11
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 51.416
+      y: 8.09001
+      yaw: 5.73341
+      t: 12
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 52.7017
+      y: 9.72087
+      yaw: 5.02655
+      t: 13
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 53.357
+      y: 11.7377
+      yaw: 5.02655
+      t: 14
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 53.2755
+      y: 13.8128
+      yaw: 4.31969
+      t: 15
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 53.194
+      y: 15.8879
+      yaw: 5.02655
+      t: 16
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 53.8493
+      y: 17.9046
+      yaw: 5.02655
+      t: 17
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 1.42736
+    - x: 53.957
+      y: 19.3145
+      yaw: 4.55076
+      t: 18
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 53.6158
+      y: 21.4074
+      yaw: 4.55076
+      t: 19
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 53.2745
+      y: 23.5003
+      yaw: 4.55076
+      t: 20
+      action: 0
+      motion: forward_straight
+      transition_cost: 1.77233
+    - x: 52.9893
+      y: 25.2496
+      yaw: 4.55076
+      t: 21
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 0.693211
+    - x: 52.8
+      y: 25.9148
+      yaw: 4.31969
+      t: 22
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 52.7185
+      y: 27.9899
+      yaw: 5.02655
+      t: 23
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 53.3738
+      y: 30.0067
+      yaw: 5.02655
+      t: 24
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 53.2923
+      y: 32.0818
+      yaw: 4.31969
+      t: 25
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 52.4808
+      y: 34.041
+      yaw: 4.31969
+      t: 26
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 52.3993
+      y: 36.1161
+      yaw: 5.02655
+      t: 27
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 53.0546
+      y: 38.1329
+      yaw: 5.02655
+      t: 28
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 53.7099
+      y: 40.1497
+      yaw: 5.02655
+      t: 29
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 53.6284
+      y: 42.2248
+      yaw: 4.31969
+      t: 30
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 52.8169
+      y: 44.1839
+      yaw: 4.31969
+      t: 31
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 52.0054
+      y: 46.1431
+      yaw: 4.31969
+      t: 32
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 51.1939
+      y: 48.1022
+      yaw: 4.31969
+      t: 33
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 49.7842
+      y: 49.6272
+      yaw: 3.61284
+      t: 34
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 47.7219
+      y: 49.8713
+      yaw: 2.90598
+      t: 35
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 1.06988
+    - x: 46.7475
+      y: 49.4433
+      yaw: 2.54935
+      t: 36
+      action: 4
+      motion: reverse_turn_neg
+      transition_cost: 3.18086
+    - x: 47.9628
+      y: 51.1273
+      yaw: 1.84249
+      t: 37
+      action: 4
+      motion: reverse_turn_neg
+      transition_cost: 0.34701
+    - x: 48.0364
+      y: 51.4662
+      yaw: 1.72682
+      t: 38
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 0.468068
+    - x: 48
+      y: 51
+      yaw: 1.5708
+      t: 39
+      action: -1
+      motion: goal
+  agent5:
+    - x: 42
+      y: 4
+      yaw: 1.5708
+      t: 0
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 42.7188
+      y: 2.05165
+      yaw: 0.863942
+      t: 1
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 44.5307
+      y: 1.03693
+      yaw: 0.157083
+      t: 2
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 46.5675
+      y: 1.44206
+      yaw: 5.73341
+      t: 3
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 48.3756
+      y: 2.55005
+      yaw: 5.73341
+      t: 4
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 50.1837
+      y: 3.65804
+      yaw: 5.73341
+      t: 5
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 51.4693
+      y: 5.28891
+      yaw: 5.02655
+      t: 6
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 52.1247
+      y: 7.30569
+      yaw: 5.02655
+      t: 7
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 52.78
+      y: 9.32248
+      yaw: 5.02655
+      t: 8
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 53.4353
+      y: 11.3393
+      yaw: 5.02655
+      t: 9
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 53.3537
+      y: 13.4144
+      yaw: 4.31969
+      t: 10
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 52.5422
+      y: 15.3735
+      yaw: 4.31969
+      t: 11
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 52.4607
+      y: 17.4486
+      yaw: 5.02655
+      t: 12
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 53.116
+      y: 19.4654
+      yaw: 5.02655
+      t: 13
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 1.18771
+    - x: 53.2528
+      y: 20.6374
+      yaw: 4.63065
+      t: 14
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 53.0797
+      y: 22.7509
+      yaw: 4.63065
+      t: 15
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 52.9065
+      y: 24.8644
+      yaw: 4.63065
+      t: 16
+      action: 0
+      motion: forward_straight
+      transition_cost: 1.69776
+    - x: 52.7679
+      y: 26.5565
+      yaw: 4.63065
+      t: 17
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 1.18771
+    - x: 52.9047
+      y: 27.7285
+      yaw: 5.02655
+      t: 18
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 53.56
+      y: 29.7453
+      yaw: 5.02655
+      t: 19
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 53.4785
+      y: 31.8204
+      yaw: 4.31969
+      t: 20
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 52.667
+      y: 33.7796
+      yaw: 4.31969
+      t: 21
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 51.8555
+      y: 35.7387
+      yaw: 4.31969
+      t: 22
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 3.18086
+    - x: 51.774
+      y: 37.8138
+      yaw: 5.02655
+      t: 23
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 52.4293
+      y: 39.8306
+      yaw: 5.02655
+      t: 24
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 53.0846
+      y: 41.8474
+      yaw: 5.02655
+      t: 25
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 53.0031
+      y: 43.9225
+      yaw: 4.31969
+      t: 26
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 51.5934
+      y: 45.4475
+      yaw: 3.61284
+      t: 27
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 49.704
+      y: 46.4102
+      yaw: 3.61284
+      t: 28
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 47.8145
+      y: 47.3729
+      yaw: 3.61284
+      t: 29
+      action: 1
+      motion: forward_turn_pos
+      transition_cost: 0.361415
+    - x: 47.5032
+      y: 47.556
+      yaw: 3.73331
+      t: 30
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 45.7431
+      y: 48.7388
+      yaw: 3.73331
+      t: 31
+      action: 0
+      motion: forward_straight
+      transition_cost: 2.12057
+    - x: 43.9831
+      y: 49.9216
+      yaw: 3.73331
+      t: 32
+      action: 0
+      motion: forward_straight
+      transition_cost: 0.397344
+    - x: 43.6533
+      y: 50.1433
+      yaw: 3.73331
+      t: 33
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 41.6352
+      y: 50.6334
+      yaw: 3.02645
+      t: 34
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 3.18086
+    - x: 39.7824
+      y: 49.6956
+      yaw: 2.31959
+      t: 35
+      action: 2
+      motion: forward_turn_neg
+      transition_cost: 0.471239
+    - x: 39.49
+      y: 49.3267
+      yaw: 2.16251
+      t: 36
+      action: 4
+      motion: reverse_turn_neg
+      transition_cost: 1.77514
+    - x: 40
+      y: 51
+      yaw: 1.5708
+      t: 37
+      action: -1
+      motion: goal

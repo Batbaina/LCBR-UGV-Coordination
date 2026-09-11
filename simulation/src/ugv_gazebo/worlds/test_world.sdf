@@ -1,0 +1,167 @@
+<?xml version="1.0"?>
+
+<sdf version="1.10">
+
+  <world name="test_world">
+
+    <physics name="physics" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <plugin
+      filename="gz-sim-physics-system"
+      name="gz::sim::systems::Physics"/>
+
+    <plugin
+      filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands"/>
+
+    <plugin
+      filename="gz-sim-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster"/>
+
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <!-- ===================================================== -->
+    <!-- LCBR WORKSPACE : [0,55] x [0,55] -->
+    <!-- ===================================================== -->
+
+    <model name="lcbr_workspace">
+      <static>true</static>
+
+      <!-- Center of [0,55] x [0,55] -->
+      <pose>27.5 27.5 -0.05 0 0 0</pose>
+
+      <link name="workspace_link">
+
+        <collision name="workspace_collision">
+          <geometry>
+            <box>
+              <size>55 55 0.10</size>
+            </box>
+          </geometry>
+        </collision>
+
+        <visual name="workspace_visual">
+          <geometry>
+            <box>
+              <size>55 55 0.10</size>
+            </box>
+          </geometry>
+
+          <material>
+            <ambient>0.55 0.55 0.55 1</ambient>
+            <diffuse>0.65 0.65 0.65 1</diffuse>
+            <specular>0.05 0.05 0.05 1</specular>
+          </material>
+        </visual>
+
+      </link>
+    </model>
+
+
+    <!-- ===================================================== -->
+    <!-- VISUAL WORKSPACE BOUNDARIES                           -->
+    <!-- These are visual only: they do NOT affect collisions -->
+    <!-- ===================================================== -->
+
+    <!-- y = 0 -->
+    <model name="boundary_south">
+      <static>true</static>
+      <pose>27.5 0 0.03 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>55 0.15 0.06</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.2 0.2 1</ambient>
+            <diffuse>0.9 0.2 0.2 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- y = 55 -->
+    <model name="boundary_north">
+      <static>true</static>
+      <pose>27.5 55 0.03 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>55 0.15 0.06</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.2 0.2 1</ambient>
+            <diffuse>0.9 0.2 0.2 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- x = 0 -->
+    <model name="boundary_west">
+      <static>true</static>
+      <pose>0 27.5 0.03 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.15 55 0.06</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.2 0.2 1</ambient>
+            <diffuse>0.9 0.2 0.2 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- x = 55 -->
+    <model name="boundary_east">
+      <static>true</static>
+      <pose>55 27.5 0.03 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.15 55 0.06</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.2 0.2 1</ambient>
+            <diffuse>0.9 0.2 0.2 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+
+
+    <!-- UGV -->
+
+    <include>
+      <uri>model://ugv</uri>
+      <name>ugv_1</name>
+
+      <pose>
+        12 4 0.05 0 0 -1.5708
+      </pose>
+    </include>
+
+  </world>
+
+</sdf>

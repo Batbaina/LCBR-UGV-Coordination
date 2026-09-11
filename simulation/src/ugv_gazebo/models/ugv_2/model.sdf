@@ -1,0 +1,427 @@
+<?xml version="1.0"?>
+<sdf version="1.10">
+
+  <model name="ugv_2">
+
+    <!-- ===================================================== -->
+    <!-- REFERENCE CONVENTION                                  -->
+    <!-- Model x=y=0 is the REAR AXLE CENTER, matching the     -->
+    <!-- SHA*/LCBR State(x,y,yaw) reference. Front axle x=1.3. -->
+    <!-- Planner footprint spans x=[-1,+2], y=[-1,+1].         -->
+    <!-- ===================================================== -->
+
+    <!-- ===================================================== -->
+    <!-- CHASSIS -->
+    <!-- ===================================================== -->
+    <link name="base_link">
+      <pose>0 0 0.35 0 0 0</pose>
+
+      <inertial>
+        <mass>20.0</mass>
+        <inertia>
+          <ixx>1.8</ixx>
+          <iyy>3.0</iyy>
+          <izz>3.5</izz>
+        </inertia>
+      </inertial>
+
+      <collision name="collision">
+        <!-- Planner footprint: rear axle reference, LB=1 m, LF=2 m. -->
+        <pose>0.5 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>3.0 2.0 0.35</size>
+          </box>
+        </geometry>
+      </collision>
+
+      <visual name="visual">
+        <!-- Visual body raised by 0.25 m so the wheels remain visible.
+             Collision, inertia and Ackermann geometry are unchanged. -->
+        <pose>0.5 0 0.25 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>3.0 2.0 0.35</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>0.1 0.4 0.8 1</ambient>
+          <diffuse>0.1 0.4 0.8 1</diffuse>
+        </material>
+      </visual>
+    </link>
+
+
+    <!-- ===================================================== -->
+    <!-- FRONT STEERING LINKS -->
+    <!-- ===================================================== -->
+
+    <link name="front_left_steering_link">
+      <pose>1.30 0.58 0.25 0 0 0</pose>
+      <inertial>
+        <mass>0.1</mass>
+        <inertia>
+          <ixx>0.001</ixx>
+          <iyy>0.001</iyy>
+          <izz>0.001</izz>
+        </inertia>
+      </inertial>
+    </link>
+
+    <link name="front_right_steering_link">
+      <pose>1.30 -0.58 0.25 0 0 0</pose>
+      <inertial>
+        <mass>0.1</mass>
+        <inertia>
+          <ixx>0.001</ixx>
+          <iyy>0.001</iyy>
+          <izz>0.001</izz>
+        </inertia>
+      </inertial>
+    </link>
+
+
+    <!-- ===================================================== -->
+    <!-- FRONT LEFT WHEEL -->
+    <!-- Link frame stays aligned with vehicle. -->
+    <!-- Cylinder geometry is rotated so axle is along Y. -->
+    <!-- ===================================================== -->
+
+    <link name="front_left_wheel">
+      <pose>1.30 0.58 0.25 0 0 0</pose>
+
+      <inertial>
+        <mass>1.0</mass>
+        <inertia>
+          <ixx>0.03</ixx>
+          <iyy>0.02</iyy>
+          <izz>0.03</izz>
+        </inertia>
+      </inertial>
+
+      <collision name="collision">
+        <pose>0 0 0 1.5708 0 0</pose>
+
+        <surface>
+          <friction>
+            <ode>
+              <mu>1.0</mu>
+              <mu2>1.0</mu2>
+            </ode>
+          </friction>
+        </surface>
+
+        <geometry>
+          <cylinder>
+            <radius>0.25</radius>
+            <length>0.16</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <visual name="visual">
+        <pose>0 0 0 1.5708 0 0</pose>
+
+        <geometry>
+          <cylinder>
+            <radius>0.25</radius>
+            <length>0.16</length>
+          </cylinder>
+        </geometry>
+
+        <material>
+          <ambient>0.05 0.05 0.05 1</ambient>
+          <diffuse>0.05 0.05 0.05 1</diffuse>
+        </material>
+      </visual>
+    </link>
+
+
+    <!-- ===================================================== -->
+    <!-- FRONT RIGHT WHEEL -->
+    <!-- ===================================================== -->
+
+    <link name="front_right_wheel">
+      <pose>1.30 -0.58 0.25 0 0 0</pose>
+
+      <inertial>
+        <mass>1.0</mass>
+        <inertia>
+          <ixx>0.03</ixx>
+          <iyy>0.02</iyy>
+          <izz>0.03</izz>
+        </inertia>
+      </inertial>
+
+      <collision name="collision">
+        <pose>0 0 0 1.5708 0 0</pose>
+
+        <surface>
+          <friction>
+            <ode>
+              <mu>1.0</mu>
+              <mu2>1.0</mu2>
+            </ode>
+          </friction>
+        </surface>
+
+        <geometry>
+          <cylinder>
+            <radius>0.25</radius>
+            <length>0.16</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <visual name="visual">
+        <pose>0 0 0 1.5708 0 0</pose>
+
+        <geometry>
+          <cylinder>
+            <radius>0.25</radius>
+            <length>0.16</length>
+          </cylinder>
+        </geometry>
+
+        <material>
+          <ambient>0.05 0.05 0.05 1</ambient>
+          <diffuse>0.05 0.05 0.05 1</diffuse>
+        </material>
+      </visual>
+    </link>
+
+
+    <!-- ===================================================== -->
+    <!-- REAR LEFT WHEEL -->
+    <!-- ===================================================== -->
+
+    <link name="rear_left_wheel">
+      <pose>0.0 0.58 0.25 0 0 0</pose>
+
+      <inertial>
+        <mass>1.0</mass>
+        <inertia>
+          <ixx>0.03</ixx>
+          <iyy>0.02</iyy>
+          <izz>0.03</izz>
+        </inertia>
+      </inertial>
+
+      <collision name="collision">
+        <pose>0 0 0 1.5708 0 0</pose>
+
+        <surface>
+          <friction>
+            <ode>
+              <mu>1.0</mu>
+              <mu2>1.0</mu2>
+            </ode>
+          </friction>
+        </surface>
+
+        <geometry>
+          <cylinder>
+            <radius>0.25</radius>
+            <length>0.16</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <visual name="visual">
+        <pose>0 0 0 1.5708 0 0</pose>
+
+        <geometry>
+          <cylinder>
+            <radius>0.25</radius>
+            <length>0.16</length>
+          </cylinder>
+        </geometry>
+
+        <material>
+          <ambient>0.05 0.05 0.05 1</ambient>
+          <diffuse>0.05 0.05 0.05 1</diffuse>
+        </material>
+      </visual>
+    </link>
+
+
+    <!-- ===================================================== -->
+    <!-- REAR RIGHT WHEEL -->
+    <!-- ===================================================== -->
+
+    <link name="rear_right_wheel">
+      <pose>0.0 -0.58 0.25 0 0 0</pose>
+
+      <inertial>
+        <mass>1.0</mass>
+        <inertia>
+          <ixx>0.03</ixx>
+          <iyy>0.02</iyy>
+          <izz>0.03</izz>
+        </inertia>
+      </inertial>
+
+      <collision name="collision">
+        <pose>0 0 0 1.5708 0 0</pose>
+
+        <surface>
+          <friction>
+            <ode>
+              <mu>1.0</mu>
+              <mu2>1.0</mu2>
+            </ode>
+          </friction>
+        </surface>
+
+        <geometry>
+          <cylinder>
+            <radius>0.25</radius>
+            <length>0.16</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <visual name="visual">
+        <pose>0 0 0 1.5708 0 0</pose>
+
+        <geometry>
+          <cylinder>
+            <radius>0.25</radius>
+            <length>0.16</length>
+          </cylinder>
+        </geometry>
+
+        <material>
+          <ambient>0.05 0.05 0.05 1</ambient>
+          <diffuse>0.05 0.05 0.05 1</diffuse>
+        </material>
+      </visual>
+    </link>
+
+
+    <!-- ===================================================== -->
+    <!-- STEERING JOINTS : rotation around Z -->
+    <!-- ===================================================== -->
+
+    <joint name="front_left_steering_joint" type="revolute">
+      <parent>base_link</parent>
+      <child>front_left_steering_link</child>
+
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-0.60</lower>
+          <upper>0.60</upper>
+          <effort>100</effort>
+          <velocity>2.0</velocity>
+        </limit>
+      </axis>
+    </joint>
+
+    <joint name="front_right_steering_joint" type="revolute">
+      <parent>base_link</parent>
+      <child>front_right_steering_link</child>
+
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-0.60</lower>
+          <upper>0.60</upper>
+          <effort>100</effort>
+          <velocity>2.0</velocity>
+        </limit>
+      </axis>
+    </joint>
+
+
+    <!-- ===================================================== -->
+    <!-- FRONT WHEEL ROLLING JOINTS : rotation around Y -->
+    <!-- ===================================================== -->
+
+    <joint name="front_left_wheel_joint" type="revolute">
+      <parent>front_left_steering_link</parent>
+      <child>front_left_wheel</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+      </axis>
+    </joint>
+
+    <joint name="front_right_wheel_joint" type="revolute">
+      <parent>front_right_steering_link</parent>
+      <child>front_right_wheel</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+      </axis>
+    </joint>
+
+
+    <!-- ===================================================== -->
+    <!-- REAR DRIVEN WHEELS : rotation around Y -->
+    <!-- ===================================================== -->
+
+    <joint name="rear_left_wheel_joint" type="revolute">
+      <parent>base_link</parent>
+      <child>rear_left_wheel</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+      </axis>
+    </joint>
+
+    <joint name="rear_right_wheel_joint" type="revolute">
+      <parent>base_link</parent>
+      <child>rear_right_wheel</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+      </axis>
+    </joint>
+
+
+    <!-- ===================================================== -->
+    <!-- ACKERMANN STEERING SYSTEM -->
+    <!-- ===================================================== -->
+
+    <plugin
+      filename="gz-sim-ackermann-steering-system"
+      name="gz::sim::systems::AckermannSteering">
+
+      <left_steering_joint>
+        front_left_steering_joint
+      </left_steering_joint>
+
+      <right_steering_joint>
+        front_right_steering_joint
+      </right_steering_joint>
+
+      <left_joint>
+        rear_left_wheel_joint
+      </left_joint>
+
+      <right_joint>
+        rear_right_wheel_joint
+      </right_joint>
+
+      <wheel_base>1.30</wheel_base>
+      <wheel_separation>1.16</wheel_separation>
+      <wheel_radius>0.25</wheel_radius>
+
+      <min_velocity>-2.0</min_velocity>
+      <max_velocity>2.0</max_velocity>
+
+      <min_acceleration>-1.0</min_acceleration>
+      <max_acceleration>1.0</max_acceleration>
+
+      <!-- Match SHA* minimum turning radius R = 3.0 m.
+           Gazebo AckermannSteering:
+           steering_limit = asin(wheel_base / turning_radius)
+                          = asin(1.30 / 3.0)
+                          ~= 0.448 rad. -->
+      <steering_limit>0.448</steering_limit>
+      <steer_p_gain>8.0</steer_p_gain>
+
+      <topic>/ugv_2/cmd_vel</topic>
+
+    </plugin>
+
+  </model>
+
+</sdf>

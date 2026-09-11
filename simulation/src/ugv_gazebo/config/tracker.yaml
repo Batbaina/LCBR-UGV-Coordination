@@ -1,0 +1,14 @@
+pure_pursuit_tracker:
+  ros__parameters:
+    agent: agent0
+    trajectory_file: agent0_dense.yaml
+    start_index: 0
+    forward_speed: 0.35
+    reverse_speed: -0.25
+    lookahead_forward: 0.45
+    lookahead_reverse: 0.40
+    wheelbase: 1.30
+    steering_limit: 0.448
+    goal_position_tolerance: 0.12
+    goal_yaw_tolerance_deg: 5.0
+    max_tracking_error: 1.50

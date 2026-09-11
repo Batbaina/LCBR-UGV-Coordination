@@ -1,27 +1,67 @@
-# Build artifacts
-build/
+# ============================================================
+# ALGORITHM — CMake build artifacts
+# ============================================================
+algorithm/build/
 *.o
 *.a
 
-# Original Wen benchmark: 3234 files, publicly available upstream --
-# clone it here rather than committing a copy (see benchmark/README.md).
-benchmark/*
-!benchmark/README.md
+# ============================================================
+# ALGORITHM — Original Wen benchmark dataset
+# ============================================================
+algorithm/benchmark/**
+!algorithm/benchmark/README.md
 
-# Generated raw outputs -- one folder per run_id, reproducible from
-# config/experiments/*.yaml + the benchmark, not meant to be versioned.
-runs/*
-!runs/.gitkeep
+# ============================================================
+# ALGORITHM — Generated experiment outputs / solutions
+# ============================================================
+algorithm/runs/**
+!algorithm/runs/.gitkeep
 
-# Editor/OS noise
+# ============================================================
+# SIMULATION — ROS 2 / colcon generated artifacts
+# ============================================================
+simulation/build/
+simulation/install/
+simulation/log/
+
+# ============================================================
+# Python cache / generated files
+# ============================================================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ============================================================
+# Python virtual environments
+# ============================================================
+.venv/
+venv/
+
+# ============================================================
+# Local notebooks
+# ============================================================
+algorithm/analysis/analysis.ipynb
+
+# ============================================================
+# Editor / IDE
+# ============================================================
 .vscode/
 .idea/
 *.swp
-.DS_Store
-__pycache__/
-*.pyc
-analysis/analysis.ipynb
+*.swo
+*~
 
-# Python virtual environments
-.venv/
-venv/
+# ============================================================
+# OS
+# ============================================================
+.DS_Store
+Thumbs.db
+
+# ============================================================
+# Temporary / backup files
+# ============================================================
+*.tmp
+*.bak
+*.backup
+*.backup2
