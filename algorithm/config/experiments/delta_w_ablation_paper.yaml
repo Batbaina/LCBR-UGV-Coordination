@@ -1,0 +1,51 @@
+# ============================================================
+# LCBR delta_w SENSITIVITY STUDY
+#
+# Purpose:
+# Evaluate sensitivity of localized conflict repair to delta_w.
+#
+# Main comparison already used delta_w = 10.
+# Here the SAME paired-active instances are evaluated with:
+#
+#     delta_w = 5, 10, 20
+#
+# CL-CBS is intentionally excluded because it does not depend
+# on delta_w and was already evaluated in the main campaign.
+# ============================================================
+
+experiment: delta_w_ablation
+
+binary: build/ugv_coordination
+vehicle_config: config/vehicle_config.yaml
+
+# Directories are retained for experiment metadata.
+# run_comparison.py uses selected_instances_dw_ablation.txt.
+instances:
+
+  - dir: benchmark/map100by100/agents10/obstacle
+  - dir: benchmark/map100by100/agents20/obstacle
+  - dir: benchmark/map100by100/agents30/obstacle
+
+  - dir: benchmark/map300by300/agents10/obstacle
+  - dir: benchmark/map300by300/agents20/obstacle
+  - dir: benchmark/map300by300/agents30/obstacle
+
+pattern: "*.yaml"
+
+# Selection itself is already frozen in:
+# selected_instances_dw_ablation.txt
+max_instances_per_dir: 50
+
+methods:
+  - lcbr
+
+delta_w:
+  - 5
+  - 10
+  - 20
+
+paired_probe: true
+
+timeout: 180
+
+max_low_level_expansions: 150000
