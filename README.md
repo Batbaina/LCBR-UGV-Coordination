@@ -210,7 +210,6 @@ UGV-Coordination/
 │   │   ├── full_pipeline/
 │   │   └── real_instances/
 │   │
-│   ├── analysis/
 │   ├── docs/
 │   ├── results/
 │   ├── tests/
@@ -340,8 +339,6 @@ If the bounded local repair cannot produce a valid solution, the original full-h
 Additional implementation details are available in:
 
 - [`algorithm/docs/LCBR.md`](algorithm/docs/LCBR.md)
-- [`algorithm/docs/EXPERIMENTS.md`](algorithm/docs/EXPERIMENTS.md)
-- [`algorithm/docs/REPRODUCIBILITY.md`](algorithm/docs/REPRODUCIBILITY.md)
 
 ---
 
@@ -1160,25 +1157,6 @@ python3 run_ablation.py \
 
 ---
 
-# 25. Solution Validation
-
-The generated solutions can be independently validated using:
-
-```bash
-cd algorithm/analysis
-
-python3 validate_all_runs.py \
-  --vehicle-config ../config/vehicle_config.yaml
-```
-
-The validation framework checks the relevant:
-
-- kinematic conditions,
-- obstacle/boundary conditions,
-- inter-robot collision conditions.
-
----
-
 # 26. Benchmark Dataset
 
 The original Wen et al. benchmark is **not stored in this repository**.
@@ -1225,17 +1203,9 @@ The simulation source package, reference scenario and reference trajectories rem
 
 # 28. Documentation
 
-Algorithm-specific documentation is available under:
+Additional algorithm documentation is available in:
 
-```text
-algorithm/docs/
-```
-
-Main documents:
-
-- [`LCBR.md`](algorithm/docs/LCBR.md) — algorithm-to-code mapping and LCBR details,
-- [`EXPERIMENTS.md`](algorithm/docs/EXPERIMENTS.md) — experiment execution,
-- [`REPRODUCIBILITY.md`](algorithm/docs/REPRODUCIBILITY.md) — environment, limitations and reproducibility notes.
+- [`LCBR.md`](algorithm/docs/LCBR.md) — implementation details, fallback behavior, and documented limitations.
 
 ---
 

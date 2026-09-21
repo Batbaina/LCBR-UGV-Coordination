@@ -1,24 +1,18 @@
 # LCBR: Local Conflict-Based Trajectory Repair
 
-This document is the algorithm-level companion to the paper ("Stage 1 --
-UGV Coordination and Task Allocation"). It maps paper sections to code so
-a reader can go from an equation to the exact line that implements it.
-For "how do I run an experiment", see `docs/EXPERIMENTS.md`. For "how do I
-reproduce a specific number", see `docs/REPRODUCIBILITY.md`.
+This document describes the implementation of Local Conflict-Based
+Trajectory Repair (LCBR) and maps its main algorithmic components to
+the corresponding source code.
 
 ## Relationship to CL-CBS
 
-LCBR is built directly on top of CL-CBS (Wen et al., 2022,
-[github.com/APRIL-ZJU/CL-CBS](https://github.com/APRIL-ZJU/CL-CBS)). The
-low-level search engine (`include/hybrid_astar.hpp`) is **unmodified**
-except for one addition: an optional per-call expansion cap (see
-`docs/REPRODUCIBILITY.md`, "robustness fix"). Everything else --
-motion primitives, cost function `g(.)`, heuristic, analytic expansion,
-Body Conflict Tree structure, conflict detection, branch-constraint
-generation -- is identical between the CL-CBS baseline and LCBR. This is
-deliberate and load-bearing: it is what makes the experimental comparison
-an ablation of one specific mechanism, not a comparison of two different
-codebases.
+LCBR is built on top of CL-CBS (Wen et al., 2022,
+[github.com/APRIL-ZJU/CL-CBS](https://github.com/APRIL-ZJU/CL-CBS)).
+The low-level SHA* search engine (`include/hybrid_astar.hpp`) and the
+Body Conflict Tree framework are shared by the CL-CBS baseline and LCBR.
+LCBR modifies the conflict-triggered replanning mechanism by first
+attempting bounded temporal repair and retaining full-horizon replanning
+as fallback.
 
 ## Pipeline (Algorithm 3)
 
@@ -68,10 +62,9 @@ Never merged in the code (`local_outcome` column in `low_level_queries.csv`):
   search domain by fixing prefix, suffix, and boundary configurations.
   `g(Gamma_LCBR)` and `g(Gamma_full)` are not ordered in general -- this
   is measured empirically (Delta SoC), not assumed.
-- **Completeness is argued, not proven.** The full-horizon query is
-  always retained as fallback; `analysis/paired_statistics.py`'s
-  cross-resolution matrix (Table III) is the empirical proxy for this
-  claim.
+- **Completeness is argued, not proven.** Full-horizon replanning is
+  always retained as fallback whenever local repair is infeasible or
+  inapplicable.
 - **Junction cost correction is approximate** when a splice boundary
   lands inside the Reeds-Shepp analytic-expansion tail (geometry-dependent,
   non-fixed-length transitions). Flagged per-query via
@@ -81,8 +74,7 @@ Never merged in the code (`local_outcome` column in `low_level_queries.csv`):
   BCT branching a *successful* but lower-quality local repair can induce
   further down the tree. The observable proxy for that second effect is
   the `N_LL(LCBR) / N_LL(CL-CBS)` ratio (Table II).
-- **delta_w's sweet spot is instance-dependent**, not universal (see
-  `docs/REPRODUCIBILITY.md` for the two contradicting empirical examples
-  found during development: a bottleneck-heavy synthetic instance where
-  small delta_w wins big, and a real Wen benchmark instance where small
-  delta_w loses badly).
+- **The effect of `delta_w` is instance-dependent.** Smaller repair
+  windows can reduce low-level search effort, whereas larger windows
+  approach full-horizon replanning; the repository therefore exposes
+  `delta_w` as a configurable parameter.

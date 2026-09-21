@@ -65,3 +65,16 @@ Thumbs.db
 *.bak
 *.backup
 *.backup2
+
+# ============================================================
+# Development backups / intermediate files
+# ============================================================
+*_backup.py
+*_before_*.sdf
+*FIX_NOTES.md
+*WAIT_RELEASE_FIX.md
+
+# ============================================================
+# Private analysis notebooks/scripts
+# ============================================================
+algorithm/analysis/
