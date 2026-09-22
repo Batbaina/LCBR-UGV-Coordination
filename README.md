@@ -318,16 +318,6 @@ The Gazebo experiments are intended as **qualitative execution validation**, not
 
 ---
 
-## Relationship to CL-CBS
-
-This implementation builds on the CL-CBS / CL-MAPF framework of Wen et al.:
-
-> L. Wen et al., “CL-MAPF: Multi-Agent Path Finding for Car-Like Robots with Kinematic and Spatiotemporal Constraints,” *Robotics and Autonomous Systems*, vol. 150, 2022.
-
-LCBR retains the CL-CBS conflict representation, Body Conflict Tree, and SHA* low-level planning machinery while introducing localized temporal repair for conflict-triggered replanning.
-
-Please cite the original CL-CBS work when using the underlying CL-CBS components.
-
 ---
 
 ## Citation
