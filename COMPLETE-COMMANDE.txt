@@ -1,20 +1,22 @@
 ================================================================================
-LCBR MULTI-UGV — COMPLETE EXECUTION COMMANDS
+LCBR — COMPLETE EXECUTION AND REPRODUCIBILITY COMMANDS
 Algorithm + Full Pipeline + CL-CBS/LCBR Comparison + GIF + ROS 2/Gazebo
 ================================================================================
 
+
+Repository:
+https://github.com/Batbaina/LCBR-UGV-Coordination
 
 ================================================================================
 0. REPOSITORY STRUCTURE
 ================================================================================
 
-UGV-Coordination/
+LCBR-UGV-Coordination/
 |
 |-- algorithm/
 |   |-- build/
 |   |-- config/
 |   |-- experiments/
-|   |-- analysis/
 |   |-- tools/
 |   |-- runs/
 |   |-- include/
@@ -42,7 +44,7 @@ UGV-Coordination/
 
 From the repository root:
 
-cd UGV-Coordination/algorithm
+cd LCBR-UGV-Coordination/algorithm
 
 mkdir -p build
 cd build
@@ -73,7 +75,7 @@ algorithm/build/ugv_coordination
 
 Go to:
 
-cd UGV-Coordination/algorithm
+cd LCBR-UGV-Coordination/algorithm
 
 Create the output directory:
 
@@ -131,7 +133,7 @@ runs/full_pipeline/corridors_6ugv/final_lcbr.yaml
 
 From:
 
-cd UGV-Coordination/algorithm
+cd LCBR-UGV-Coordination/algorithm
 
 
 python3 tools/visualize_v2.py \
@@ -189,7 +191,7 @@ experiments/full_pipeline/instances/instance3_grouped_croprows.yaml
 
 From:
 
-cd UGV-Coordination/algorithm
+cd LCBR-UGV-Coordination/algorithm
 
 
 Run:
@@ -203,7 +205,7 @@ python3 experiments/full_pipeline/run_examples.py
 
 Go to:
 
-cd UGV-Coordination/algorithm/experiments/main_comparison
+cd LCBR-UGV-Coordination/algorithm/experiments/main_comparison
 
 
 Select the instances:
@@ -224,7 +226,7 @@ python3 run_comparison.py \
 8. CL-CBS vs LCBR — 100 x 100 COMPARISON
 ================================================================================
 
-cd UGV-Coordination/algorithm/experiments/main_comparison
+cd LCBR-UGV-Coordination/algorithm/experiments/main_comparison
 
 
 python3 select_instances.py \
@@ -241,7 +243,7 @@ python3 run_comparison.py \
 9. CL-CBS vs LCBR — 300 x 300 COMPARISON
 ================================================================================
 
-cd UGV-Coordination/algorithm/experiments/main_comparison
+cd LCBR-UGV-Coordination/algorithm/experiments/main_comparison
 
 
 python3 select_instances.py \
@@ -284,7 +286,7 @@ the common planning machinery consistent.
 
 Go to:
 
-cd UGV-Coordination/algorithm/experiments/delta_w_ablation
+cd LCBR-UGV-Coordination/algorithm/experiments/delta_w_ablation
 
 
 Example for 100 x 100:
@@ -305,29 +307,6 @@ python3 run_ablation.py \
 
 
 ================================================================================
-12. VALIDATE THE GENERATED SOLUTIONS
-================================================================================
-
-Go to:
-
-cd UGV-Coordination/algorithm/analysis
-
-
-Run:
-
-python3 validate_all_runs.py \
-  --vehicle-config ../config/vehicle_config.yaml
-
-
-This performs independent validation of the generated solutions for the
-implemented validation criteria, including:
-
-- kinematic validity,
-- obstacle / workspace validity,
-- inter-UGV collision validity.
-
-
-================================================================================
 13. ALGORITHM -> GAZEBO
 ================================================================================
 
@@ -336,7 +315,7 @@ The planner output used by Gazebo is:
 algorithm/runs/full_pipeline/corridors_6ugv/final_lcbr.yaml
 
 
-From the ROOT of UGV-Coordination:
+From the ROOT of LCBR-UGV-Coordination:
 
 cp \
   algorithm/runs/full_pipeline/corridors_6ugv/final_lcbr.yaml \
@@ -360,7 +339,7 @@ simulation
 
 Go to:
 
-cd UGV-Coordination/simulation/src/ugv_gazebo
+cd LCBR-UGV-Coordination/simulation/src/ugv_gazebo
 
 
 Run:
@@ -399,7 +378,7 @@ The script also performs the primitive endpoint audit.
 
 Still inside:
 
-UGV-Coordination/simulation/src/ugv_gazebo
+LCBR-UGV-Coordination/simulation/src/ugv_gazebo
 
 
 Run:
@@ -441,7 +420,7 @@ agent5 -> ugv_6 -> start (42, 4)
 
 Go to:
 
-cd UGV-Coordination/simulation
+cd LCBR-UGV-Coordination/simulation
 
 
 Load ROS 2 Jazzy:
@@ -478,7 +457,7 @@ ugv_gazebo multi_ugv_tracker
 Open Terminal 1.
 
 
-cd UGV-Coordination/simulation
+cd LCBR-UGV-Coordination/simulation
 
 source /opt/ros/jazzy/setup.bash
 source install/setup.bash
@@ -499,7 +478,7 @@ Wait until:
 
 In another terminal:
 
-cd UGV-Coordination/simulation
+cd LCBR-UGV-Coordination/simulation
 
 source /opt/ros/jazzy/setup.bash
 source install/setup.bash
@@ -534,7 +513,7 @@ Expected:
 Open Terminal 2.
 
 
-cd UGV-Coordination/simulation
+cd LCBR-UGV-Coordination/simulation
 
 source /opt/ros/jazzy/setup.bash
 source install/setup.bash
@@ -627,7 +606,7 @@ The actual achievable real-time factor depends on:
 
 If only fast execution is required and visualization is not required:
 
-cd UGV-Coordination/simulation
+cd LCBR-UGV-Coordination/simulation
 
 source /opt/ros/jazzy/setup.bash
 source install/setup.bash
@@ -755,7 +734,7 @@ MULTI-UGV MISSION END | complete=6/6 | failed=0/6
 
 # ---------------- ALGORITHM ----------------
 
-cd UGV-Coordination/algorithm
+cd LCBR-UGV-Coordination/algorithm
 
 mkdir -p runs/full_pipeline/corridors_6ugv
 
@@ -807,7 +786,7 @@ ros2 launch ugv_gazebo simulation.launch.py
 
 # ---------------- TERMINAL 2 ----------------
 
-cd UGV-Coordination/simulation
+cd LCBR-UGV-Coordination/simulation
 
 source /opt/ros/jazzy/setup.bash
 source install/setup.bash
