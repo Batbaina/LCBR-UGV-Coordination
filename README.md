@@ -42,30 +42,29 @@ LCBR preserves the CL-CBS high-level Body Conflict Tree (BCT) structure and SHA*
 
 ---
 
-## LCBR Examples
+## LCBR Example
 
-The following examples illustrate LCBR on representative multi-UGV scenarios used in the study.
+The following example illustrates the effect of conflict resolution on the
+multi-UGV trajectories. The first animation shows the nominal trajectories
+after task assignment, which may contain inter-robot conflicts. The second
+shows the collision-free trajectories obtained after LCBR.
 
 <table align="center">
 <tr>
-  <th>Scenario 1</th>
-  <th>Scenario 2</th>
-  <th>Scenario 3</th>
+  <th>Before LCBR</th>
+  <th>After LCBR</th>
 </tr>
 <tr>
   <td align="center">
-    <img src="algorithm/docs/images/paper_scenario_1.gif" width="280" alt="LCBR scenario 1">
+    <img src="algorithm/docs/images/before.gif" width="420"
+         alt="Nominal multi-UGV trajectories before LCBR">
   </td>
   <td align="center">
-    <img src="algorithm/docs/images/paper_scenario_2.gif" width="280" alt="LCBR scenario 2">
-  </td>
-  <td align="center">
-    <img src="algorithm/docs/images/paper_scenario_3.gif" width="280" alt="LCBR scenario 3">
+    <img src="algorithm/docs/images/after.gif" width="420"
+         alt="Collision-free multi-UGV trajectories after LCBR">
   </td>
 </tr>
 </table>
-
-> **Note:** replace the three `paper_scenario_*.gif` files with the corresponding GIFs used in the paper, or update the paths above to match their filenames.
 
 ---
 
@@ -264,18 +263,17 @@ The simulation layer does **not** perform additional trajectory planning. It exe
 </tr>
 <tr>
   <td align="center">
-    <img src="algorithm/docs/images/gazebo_1.png" width="280" alt="Gazebo initial configuration">
+    <img src="algorithm/docs/images/gazebo_initial.png" width="280" alt="Gazebo initial configuration">
   </td>
   <td align="center">
-    <img src="algorithm/docs/images/gazebo_2.png" width="280" alt="Gazebo trajectory execution">
+    <img src="algorithm/docs/images/gazebo_execution.png" width="280" alt="Gazebo trajectory execution">
   </td>
   <td align="center">
-    <img src="algorithm/docs/images/gazebo_3.png" width="280" alt="Gazebo final configuration">
+    <img src="algorithm/docs/images/gazebo_final.png" width="280" alt="Gazebo final configuration">
   </td>
 </tr>
 </table>
 
-> **Note:** add the three Gazebo images as `gazebo_1.png`, `gazebo_2.png`, and `gazebo_3.png` under `algorithm/docs/images/`, or update the paths above to match their filenames.
 
 ### Simulation Requirements
 
