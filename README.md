@@ -257,9 +257,9 @@ The simulation layer does **not** perform additional trajectory planning. It exe
 
 <table align="center">
 <tr>
-  <th>Initial Configuration</th>
-  <th>Trajectory Execution</th>
-  <th>Final Configuration</th>
+  <th><big>Initial Configuration</big></th>
+  <th><big>Trajectory Execution</big></th>
+  <th><big>Final Configuration</big></th>
 </tr>
 <tr>
   <td align="center">
