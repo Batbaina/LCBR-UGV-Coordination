@@ -255,9 +255,13 @@ The simulation layer does **not** perform additional trajectory planning. It exe
 
 ### Simulation Demo
 
-A complete Gazebo execution of the coordinated six-UGV mission is available below:
+The following video shows the complete Gazebo execution of the coordinated
+six-UGV mission.
 
-[▶ **Watch the Gazebo simulation**](simulation/src/ugv_gazebo/Docs/gazebo-simulation.mp4)
+
+https://github.com/user-attachments/assets/8007e38f-7725-48b4-af36-c0119f621dab
+
+
 
 ### Gazebo Examples
 
