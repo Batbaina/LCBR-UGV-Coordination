@@ -89,7 +89,7 @@ UGV-Coordination/
 └── README.md
 ```
 
-The original benchmark dataset, generated experiment runs, build artifacts, and analysis notebooks are intentionally not included in the public repository.
+The original benchmark dataset, generated experiment runs, build artifacts, and analysis notebooks are not included in the public repository but are available upon request.
 
 ---
 
@@ -104,6 +104,7 @@ The planning implementation has been tested with:
 - OMPL 1.5
 - yaml-cpp 0.8
 - Eigen3
+- Python 3.12.3
 
 Install the main Ubuntu dependencies with:
 
